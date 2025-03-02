@@ -153,11 +153,9 @@ export default function Edit({ attributes, setAttributes }) {
         if (!media) return null;
         
         return (
-            <div className="openverse-attribution">
-                <small>
+            <div className="wp-element-caption openverse-attribution">
                     {__('Creator:', 'openverse-connect')} {media.creator || __('Unknown', 'openverse-connect')} | 
                     {__('License:', 'openverse-connect')} {media.license}
-                </small>
             </div>
         );
     };

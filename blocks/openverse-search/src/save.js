@@ -28,12 +28,10 @@ export default function Save({ attributes }) {
         if (!showAttribution) return null;
         
         return (
-            <div className="openverse-attribution">
-                <small>
+            <figcaption className="wp-element-caption openverse-attribution">
                     Creator: {selectedMedia.creator || 'Unknown'} | 
                     License: {selectedMedia.license}
-                </small>
-            </div>
+            </figcaption>
         );
     };
 
