@@ -165,33 +165,18 @@ export default function Edit({ attributes, setAttributes }) {
             <ToggleControl
                 label={__('Show Attribution', 'openverse-connect')}
                 checked={showAttribution}
-                onChange={(value) => setAttributes({ showAttribution: value })}
+                onChange={(value) => {
+                    setAttributes({ showAttribution: value });
+                }}
             />
             
             {mediaType === 'image' && (
-                <>
-                    <TextControl
-                        label={__('Alt Text', 'openverse-connect')}
-                        value={altText}
-                        onChange={(value) => setAttributes({ altText: sanitizeAltText(value) })}
-                        help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')}
-                    />
-                    
-                    <SelectControl
-                        label={__('Image Size', 'openverse-connect')}
-                        value={imageSize}
-                        options={imageSizeOptions}
-                        onChange={(value) => setAttributes({ imageSize: value })}
-                    />
-                    
-                    <RangeControl
-                        label={__('Maximum Width (%)', 'openverse-connect')}
-                        value={maxWidth}
-                        onChange={(value) => setAttributes({ maxWidth: value })}
-                        min={10}
-                        max={100}
-                    />
-                </>
+                <TextControl
+                    label={__('Alt Text', 'openverse-connect')}
+                    value={altText}
+                    onChange={(value) => setAttributes({ altText: sanitizeAltText(value) })}
+                    help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')}
+                />
             )}
         </>
     );
@@ -220,6 +205,47 @@ export default function Edit({ attributes, setAttributes }) {
             renderContent={() => (
                 <div className="openverse-media-settings-panel" style={{ minWidth: '300px', maxWidth: '500px', height: 'auto', padding: '20px', margin: 'auto' }}>
                     <MediaSettingsPanel />
+                </div>
+            )}
+        />
+    );
+
+    const ImageSizeDropdown = () => (
+        <Dropdown
+            className="openverse-image-size-dropdown"
+            contentClassName="openverse-image-size-dropdown-content"
+            popoverProps={{
+                placement: 'bottom-start',
+                offset: 20,
+                shift: true,
+                flip: true,
+                resize: true,
+                headerTitle: __('Image Size', 'openverse-connect'),
+            }}
+            renderToggle={({ isOpen, onToggle }) => (
+                <ToolbarButton
+                    icon="editor-expand"
+                    label={__('Image Size', 'openverse-connect')}
+                    onClick={onToggle}
+                    aria-expanded={isOpen}
+                    isPressed={isOpen}
+                />
+            )}
+            renderContent={() => (
+                <div className="openverse-image-size-panel" style={{ padding: '12px', minWidth: '200px' }}>
+                    <SelectControl
+                        label={__('Image Size', 'openverse-connect')}
+                        value={imageSize}
+                        options={imageSizeOptions}
+                        onChange={(value) => setAttributes({ imageSize: value })}
+                    />
+                    <RangeControl
+                        label={__('Maximum Width (%)', 'openverse-connect')}
+                        value={maxWidth}
+                        onChange={(value) => setAttributes({ maxWidth: value })}
+                        min={10}
+                        max={100}
+                    />
                 </div>
             )}
         />
@@ -351,7 +377,7 @@ export default function Edit({ attributes, setAttributes }) {
     return (
         <>
             {selectedMedia && !isSearchInterfaceOpen && (
-                <BlockControls onClick={stopPropagation}>
+                <BlockControls>
                     <ToolbarGroup>
                         <ToolbarButton
                             icon={replace}
@@ -359,6 +385,7 @@ export default function Edit({ attributes, setAttributes }) {
                             onClick={resetSelection}
                         />
                         <MediaSettingsDropdown />
+                        {mediaType === 'image' && <ImageSizeDropdown />}
                     </ToolbarGroup>
                 </BlockControls>
             )}
@@ -366,6 +393,24 @@ export default function Edit({ attributes, setAttributes }) {
             <InspectorControls>
                 <PanelBody title={__('Media Settings', 'openverse-connect')} initialOpen={true}>
                     <MediaSettingsPanel />
+                    {mediaType === 'image' && (
+                        <>
+                            <SelectControl
+                                label={__('Image Size', 'openverse-connect')}
+                                value={imageSize}
+                                options={imageSizeOptions}
+                                onChange={(value) => setAttributes({ imageSize: value })}
+                            />
+                            
+                            <RangeControl
+                                label={__('Maximum Width (%)', 'openverse-connect')}
+                                value={maxWidth}
+                                onChange={(value) => setAttributes({ maxWidth: value })}
+                                min={10}
+                                max={100}
+                            />
+                        </>
+                    )}
                 </PanelBody>
             </InspectorControls>
             
