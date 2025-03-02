@@ -231,12 +231,13 @@ export default function Edit({ attributes, setAttributes }) {
         if (!selectedMedia) return null;
 
         return (
-            <div className="openverse-selected-media" style={{ maxWidth: `${maxWidth}%` }}>
+            <div className="openverse-selected-media">
                 {mediaType === 'image' ? (
                     <img 
                         src={selectedMedia.thumbnail || selectedMedia.url} 
                         alt={altText || selectedMedia.title || ''}
                         className={`size-${imageSize}`}
+                        style={{ maxWidth: `${maxWidth}%` }}
                     />
                 ) : (
                     <audio controls>
