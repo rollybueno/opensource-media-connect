@@ -76,6 +76,8 @@ function Edit({
   const [error, setError] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(null);
   const [page, setPage] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(1);
   const [hasMore, setHasMore] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(false);
+  const [isSearchInterfaceOpen, setIsSearchInterfaceOpen] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(false);
+  const previousMediaRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useRef)(null);
   const performSearch = async (resetResults = true) => {
     if (!query.trim()) {
       return;
@@ -122,10 +124,29 @@ function Edit({
       altText: altText || sanitizeAltText(defaultAltText)
     });
   };
+  const openSearchInterface = () => {
+    previousMediaRef.current = selectedMedia;
+    setIsSearchInterfaceOpen(true);
+  };
+  const cancelSearch = () => {
+    setAttributes({
+      query: '',
+      mediaType: 'image',
+      license: 'all'
+    });
+    setSearchResults([]);
+    setIsSearchInterfaceOpen(false);
+    if (previousMediaRef.current) {
+      setAttributes({
+        selectedMedia: previousMediaRef.current
+      });
+    }
+  };
   const resetSelection = () => {
     setAttributes({
       selectedMedia: null
     });
+    openSearchInterface();
   };
   const licenseOptions = [{
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('All licenses', 'openverse-connect'),
@@ -257,15 +278,6 @@ function Edit({
       type: "audio/mpeg"
     }), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Your browser does not support the audio element.', 'openverse-connect')), showAttribution && renderAttribution(selectedMedia));
   };
-  const cancelSearch = () => {
-    setAttributes({
-      query: '',
-      mediaType: 'image',
-      license: 'all',
-      selectedMedia: null
-    });
-    performSearch(false);
-  };
   const renderSearchInterface = () => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "openverse-search-interface"
@@ -296,14 +308,17 @@ function Edit({
         query: value
       }),
       placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Enter search terms...', 'openverse-connect')
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "openverse-search-buttons"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+      isPrimary: true,
       onClick: () => performSearch(true),
-      disabled: !query.trim() || isSearching,
-      className: "button button-primary"
-    }, isSearching ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null) : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Search', 'openverse-connect')), " \xA0", (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
-      onClick: () => cancelSearch(),
-      className: "button button-secondary"
-    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Cancel', 'openverse-connect')))), error && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      disabled: !query.trim() || isSearching
+    }, isSearching ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null) : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Search', 'openverse-connect')), previousMediaRef.current && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+      isSecondary: true,
+      onClick: cancelSearch,
+      className: "openverse-cancel-search"
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Cancel', 'openverse-connect'))))), error && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "openverse-error-message"
     }, error), searchResults.length > 0 && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "openverse-search-results"
@@ -328,7 +343,7 @@ function Edit({
       className: "openverse-load-more button button-secondary"
     }, isSearching ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null) : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Load More', 'openverse-connect'))));
   };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, selectedMedia && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.BlockControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, selectedMedia && !isSearchInterfaceOpen && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.BlockControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_8__["default"],
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Choose Different Media', 'openverse-connect'),
     onClick: resetSelection
@@ -337,7 +352,7 @@ function Edit({
     initialOpen: true
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(MediaSettingsPanel, null))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...blockProps
-  }, selectedMedia ? renderSelectedMedia() : renderSearchInterface()));
+  }, selectedMedia && !isSearchInterfaceOpen ? renderSelectedMedia() : renderSearchInterface()));
 }
 
 /***/ }),

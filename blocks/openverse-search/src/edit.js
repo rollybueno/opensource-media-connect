@@ -15,7 +15,7 @@ import {
     ToolbarButton,
     Dropdown
 } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import { useState, useRef } from '@wordpress/element';
 import { 
     useBlockProps,
     BlockControls,
@@ -43,6 +43,8 @@ export default function Edit({ attributes, setAttributes }) {
     const [error, setError] = useState(null);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(false);
+    const [isSearchInterfaceOpen, setIsSearchInterfaceOpen] = useState(false);
+    const previousMediaRef = useRef(null);
 
     const performSearch = async (resetResults = true) => {
         if (!query.trim()) {
@@ -98,8 +100,30 @@ export default function Edit({ attributes, setAttributes }) {
         });
     };
 
+    const openSearchInterface = () => {
+        previousMediaRef.current = selectedMedia;
+        setIsSearchInterfaceOpen(true);
+    };
+
+    const cancelSearch = () => {
+        setAttributes({ 
+            query: '', 
+            mediaType: 'image', 
+            license: 'all' 
+        });
+        
+        setSearchResults([]);
+        
+        setIsSearchInterfaceOpen(false);
+        
+        if (previousMediaRef.current) {
+            setAttributes({ selectedMedia: previousMediaRef.current });
+        }
+    };
+
     const resetSelection = () => {
         setAttributes({ selectedMedia: null });
+        openSearchInterface();
     };
 
     const licenseOptions = [
@@ -226,11 +250,6 @@ export default function Edit({ attributes, setAttributes }) {
         );
     };
 
-    const cancelSearch = () => {
-        setAttributes({ query: '', mediaType: 'image', license: 'all', selectedMedia: null });
-        performSearch(false);
-    };
-
     const renderSearchInterface = () => {
         return (
             <div className="openverse-search-interface">
@@ -261,20 +280,25 @@ export default function Edit({ attributes, setAttributes }) {
                             placeholder={__('Enter search terms...', 'openverse-connect')}
                         />
                         
-                        <Button
-                            onClick={() => performSearch(true)}
-                            disabled={!query.trim() || isSearching}
-                            className="button button-primary"
-                        >
-                            {isSearching ? <Spinner /> : __('Search', 'openverse-connect')}
-                        </Button> &nbsp;
-
-                        <Button
-                            onClick={() => cancelSearch()}
-                            className="button button-secondary"
-                        >         
-                            {__('Cancel', 'openverse-connect')}
-                        </Button>
+                        <div className="openverse-search-buttons">
+                            <Button 
+                                isPrimary
+                                onClick={() => performSearch(true)}
+                                disabled={!query.trim() || isSearching}
+                            >
+                                {isSearching ? <Spinner /> : __('Search', 'openverse-connect')}
+                            </Button>
+                            
+                            {previousMediaRef.current && (
+                                <Button 
+                                    isSecondary
+                                    onClick={cancelSearch}
+                                    className="openverse-cancel-search"
+                                >
+                                    {__('Cancel', 'openverse-connect')}
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </Placeholder>
 
@@ -323,7 +347,7 @@ export default function Edit({ attributes, setAttributes }) {
 
     return (
         <>
-            {selectedMedia && (
+            {selectedMedia && !isSearchInterfaceOpen && (
                 <BlockControls>
                     <ToolbarGroup>
                         <ToolbarButton
@@ -343,7 +367,7 @@ export default function Edit({ attributes, setAttributes }) {
             </InspectorControls>
             
             <div {...blockProps}>
-                {selectedMedia ? (
+                {selectedMedia && !isSearchInterfaceOpen ? (
                     renderSelectedMedia()
                 ) : (
                     renderSearchInterface()
