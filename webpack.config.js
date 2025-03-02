@@ -19,6 +19,17 @@ module.exports = {
           from: './blocks/openverse-search/block.json',
           to: './openverse-search/block.json',
         },
+        // Copy CSS files if they exist
+        {
+          from: './blocks/openverse-search/style.css',
+          to: './openverse-search/style.css',
+          noErrorOnMissing: true,
+        },
+        {
+          from: './blocks/openverse-search/index.css',
+          to: './openverse-search/index.css',
+          noErrorOnMissing: true,
+        },
       ],
     }),
   ],

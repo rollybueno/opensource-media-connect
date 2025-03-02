@@ -66,45 +66,51 @@ function openverse_connect_register_block() {
 	// Check if build directory exists
 	$build_dir = OPENVERSE_CONNECT_PLUGIN_DIR . 'build/openverse-search';
 	
-	if (file_exists($build_dir)) {
+	if (file_exists($build_dir) && file_exists($build_dir . '/block.json')) {
 		// Register block from build directory
 		register_block_type($build_dir);
 	} else {
-		// Fallback to manual registration for development
-		wp_register_script(
-			'openverse-connect-block',
-			OPENVERSE_CONNECT_PLUGIN_URL . 'blocks/openverse-search/index.js',
-			array( 
-				'wp-blocks', 
-				'wp-element', 
-				'wp-editor', 
-				'wp-components', 
-				'wp-i18n', 
-				'wp-api-fetch' 
-			),
-			filemtime( OPENVERSE_CONNECT_PLUGIN_DIR . 'blocks/openverse-search/index.js' ),
-			true
-		);
+		// Fallback to source directory for development
+		$source_dir = OPENVERSE_CONNECT_PLUGIN_DIR . 'blocks/openverse-search';
+		if (file_exists($source_dir) && file_exists($source_dir . '/block.json')) {
+			register_block_type($source_dir);
+		} else {
+			// Manual registration as last resort
+			wp_register_script(
+				'openverse-connect-block',
+				OPENVERSE_CONNECT_PLUGIN_URL . 'blocks/openverse-search/src/index.js',
+				array( 
+					'wp-blocks', 
+					'wp-element', 
+					'wp-editor', 
+					'wp-components', 
+					'wp-i18n', 
+					'wp-api-fetch' 
+				),
+				filemtime( OPENVERSE_CONNECT_PLUGIN_DIR . 'blocks/openverse-search/src/index.js' ),
+				true
+			);
 
-		wp_register_style(
-			'openverse-connect-block-editor',
-			OPENVERSE_CONNECT_PLUGIN_URL . 'blocks/openverse-search/editor.css',
-			array( 'wp-edit-blocks' ),
-			filemtime( OPENVERSE_CONNECT_PLUGIN_DIR . 'blocks/openverse-search/editor.css' )
-		);
-
-		wp_register_style(
-			'openverse-connect-block',
-			OPENVERSE_CONNECT_PLUGIN_URL . 'blocks/openverse-search/style.css',
-			array(),
-			filemtime( OPENVERSE_CONNECT_PLUGIN_DIR . 'blocks/openverse-search/style.css' )
-		);
-
-		register_block_type( 'openverse-connect/search', array(
-			'editor_script' => 'openverse-connect-block',
-			'editor_style'  => 'openverse-connect-block-editor',
-			'style'         => 'openverse-connect-block',
-		) );
+			register_block_type( 'openverse-connect/search', array(
+				'editor_script' => 'openverse-connect-block',
+			) );
+		}
 	}
 }
 add_action( 'init', 'openverse_connect_register_block' );
+
+// Add this near the top of your file, after the plugin header
+add_action('admin_notices', function() {
+    if (!current_user_can('manage_options')) return;
+    
+    $build_dir = OPENVERSE_CONNECT_PLUGIN_DIR . 'build/openverse-search';
+    $source_dir = OPENVERSE_CONNECT_PLUGIN_DIR . 'blocks/openverse-search';
+    
+    $message = '<strong>Openverse Connect Debug:</strong><br>';
+    $message .= 'Build directory exists: ' . (file_exists($build_dir) ? 'Yes' : 'No') . '<br>';
+    $message .= 'Build block.json exists: ' . (file_exists($build_dir . '/block.json') ? 'Yes' : 'No') . '<br>';
+    $message .= 'Source directory exists: ' . (file_exists($source_dir) ? 'Yes' : 'No') . '<br>';
+    $message .= 'Source block.json exists: ' . (file_exists($source_dir . '/block.json') ? 'Yes' : 'No') . '<br>';
+    
+    echo '<div class="notice notice-info"><p>' . $message . '</p></div>';
+});

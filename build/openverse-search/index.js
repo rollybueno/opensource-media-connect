@@ -8,7 +8,7 @@
   \********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"apiVersion":2,"name":"openverse-connect/search","title":"Openverse Search","category":"media","icon":"search","description":"Search and insert media from Openverse","textdomain":"openverse-connect","supports":{"html":false,"align":["wide","full"]},"attributes":{"query":{"type":"string","default":""},"mediaType":{"type":"string","default":"image"},"license":{"type":"string","default":"all"},"selectedMedia":{"type":"object","default":null},"showAttribution":{"type":"boolean","default":true},"imageSize":{"type":"string","default":"medium"},"maxWidth":{"type":"number","default":100},"altText":{"type":"string","default":""}},"editorScript":"file:./index.js","style":"file:./style-openverse-search.css","editorStyle":"file:./openverse-search.css"}');
+module.exports = /*#__PURE__*/JSON.parse('{"apiVersion":2,"name":"openverse-connect/search","title":"Openverse Search","category":"media","icon":"search","description":"Search and insert media from Openverse","textdomain":"openverse-connect","supports":{"html":false,"align":["wide","full"]},"attributes":{"query":{"type":"string","default":""},"mediaType":{"type":"string","default":"image"},"license":{"type":"string","default":"all"},"selectedMedia":{"type":"object","default":null},"showAttribution":{"type":"boolean","default":true},"imageSize":{"type":"string","default":"medium"},"maxWidth":{"type":"number","default":100},"altText":{"type":"string","default":""}},"editorScript":"file:./index.js","style":"file:./style.css","editorStyle":"file:./index.css"}');
 
 /***/ }),
 
@@ -32,6 +32,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/cog.js");
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/replace.js");
 /* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
 /* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _wordpress_escape_html__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/escape-html */ "@wordpress/escape-html");
@@ -40,6 +42,7 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * WordPress dependencies
  */
+
 
 
 
@@ -175,6 +178,60 @@ function Edit({
       className: "openverse-attribution"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("small", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Creator:', 'openverse-connect'), " ", media.creator || (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unknown', 'openverse-connect'), " |", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('License:', 'openverse-connect'), " ", media.license));
   };
+  const MediaSettingsPanel = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Show Attribution', 'openverse-connect'),
+    checked: showAttribution,
+    onChange: value => setAttributes({
+      showAttribution: value
+    })
+  }), mediaType === 'image' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alt Text', 'openverse-connect'),
+    value: altText,
+    onChange: value => setAttributes({
+      altText: sanitizeAltText(value)
+    }),
+    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Image Size', 'openverse-connect'),
+    value: imageSize,
+    options: imageSizeOptions,
+    onChange: value => setAttributes({
+      imageSize: value
+    })
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.RangeControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Maximum Width (%)', 'openverse-connect'),
+    value: maxWidth,
+    onChange: value => setAttributes({
+      maxWidth: value
+    }),
+    min: 10,
+    max: 100
+  })));
+  const MediaSettingsDropdown = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Dropdown, {
+    className: "openverse-media-settings-dropdown",
+    contentClassName: "openverse-media-settings-dropdown-content",
+    popoverProps: {
+      placement: 'bottom-start',
+      offset: 20,
+      shift: true,
+      flip: true,
+      resize: true,
+      headerTitle: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Media Settings', 'openverse-connect')
+    },
+    renderToggle: ({
+      isOpen,
+      onToggle
+    }) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
+      icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_7__["default"],
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Media Settings', 'openverse-connect'),
+      onClick: onToggle,
+      "aria-expanded": isOpen,
+      isPressed: isOpen
+    }),
+    renderContent: () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "openverse-media-settings-panel"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(MediaSettingsPanel, null))
+  });
   const renderSelectedMedia = () => {
     if (!selectedMedia) return null;
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -191,11 +248,7 @@ function Edit({
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("source", {
       src: selectedMedia.url,
       type: "audio/mpeg"
-    }), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Your browser does not support the audio element.', 'openverse-connect')), showAttribution && renderAttribution(selectedMedia), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
-      isSecondary: true,
-      onClick: resetSelection,
-      className: "openverse-reset-selection"
-    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Choose Different Media', 'openverse-connect')));
+    }), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Your browser does not support the audio element.', 'openverse-connect')), showAttribution && renderAttribution(selectedMedia));
   };
   const renderSearchInterface = () => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -257,40 +310,16 @@ function Edit({
       className: "openverse-load-more"
     }, isSearching ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null) : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Load More', 'openverse-connect'))));
   };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    ...blockProps
-  }, selectedMedia ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, renderSelectedMedia(), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, selectedMedia && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.BlockControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_8__["default"],
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Choose Different Media', 'openverse-connect'),
+    onClick: resetSelection
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(MediaSettingsDropdown, null))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Media Settings', 'openverse-connect'),
-    initialOpen: false
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Show Attribution', 'openverse-connect'),
-    checked: showAttribution,
-    onChange: value => setAttributes({
-      showAttribution: value
-    })
-  }), mediaType === 'image' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alt Text', 'openverse-connect'),
-    value: altText,
-    onChange: value => setAttributes({
-      altText: sanitizeAltText(value)
-    }),
-    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Image Size', 'openverse-connect'),
-    value: imageSize,
-    options: imageSizeOptions,
-    onChange: value => setAttributes({
-      imageSize: value
-    })
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.RangeControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Maximum Width (%)', 'openverse-connect'),
-    value: maxWidth,
-    onChange: value => setAttributes({
-      maxWidth: value
-    }),
-    min: 10,
-    max: 100
-  }))))) : renderSearchInterface());
+    initialOpen: true
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(MediaSettingsPanel, null))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    ...blockProps
+  }, selectedMedia ? renderSelectedMedia() : renderSearchInterface()));
 }
 
 /***/ }),
@@ -432,6 +461,68 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/@wordpress/icons/build-module/library/cog.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@wordpress/icons/build-module/library/cog.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/primitives */ "@wordpress/primitives");
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__);
+
+/**
+ * WordPress dependencies
+ */
+
+const cog = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.SVG, {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 24 24"
+}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.Path, {
+  fillRule: "evenodd",
+  d: "M10.289 4.836A1 1 0 0111.275 4h1.306a1 1 0 01.987.836l.244 1.466c.787.26 1.503.679 2.108 1.218l1.393-.522a1 1 0 011.216.437l.653 1.13a1 1 0 01-.23 1.273l-1.148.944a6.025 6.025 0 010 2.435l1.149.946a1 1 0 01.23 1.272l-.653 1.13a1 1 0 01-1.216.437l-1.394-.522c-.605.54-1.32.958-2.108 1.218l-.244 1.466a1 1 0 01-.987.836h-1.306a1 1 0 01-.986-.836l-.244-1.466a5.995 5.995 0 01-2.108-1.218l-1.394.522a1 1 0 01-1.217-.436l-.653-1.131a1 1 0 01.23-1.272l1.149-.946a6.026 6.026 0 010-2.435l-1.148-.944a1 1 0 01-.23-1.272l.653-1.131a1 1 0 011.217-.437l1.393.522a5.994 5.994 0 012.108-1.218l.244-1.466zM14.929 12a3 3 0 11-6 0 3 3 0 016 0z",
+  clipRule: "evenodd"
+}));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (cog);
+//# sourceMappingURL=cog.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@wordpress/icons/build-module/library/replace.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@wordpress/icons/build-module/library/replace.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/primitives */ "@wordpress/primitives");
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__);
+
+/**
+ * WordPress dependencies
+ */
+
+const replace = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.SVG, {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 24 24"
+}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.Path, {
+  d: "M16 10h4c.6 0 1-.4 1-1V5c0-.6-.4-1-1-1h-4c-.6 0-1 .4-1 1v4c0 .6.4 1 1 1zm-8 4H4c-.6 0-1 .4-1 1v4c0 .6.4 1 1 1h4c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1zm10-2.6L14.5 15l1.1 1.1 1.7-1.7c-.1 1.1-.3 2.3-.9 2.9-.3.3-.7.5-1.3.5h-4.5v1.5H15c.9 0 1.7-.3 2.3-.9 1-1 1.3-2.7 1.4-4l1.8 1.8 1.1-1.1-3.6-3.7zM6.8 9.7c.1-1.1.3-2.3.9-2.9.4-.4.8-.6 1.3-.6h4.5V4.8H9c-.9 0-1.7.3-2.3.9-1 1-1.3 2.7-1.4 4L3.5 8l-1 1L6 12.6 9.5 9l-1-1-1.7 1.7z"
+}));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (replace);
+//# sourceMappingURL=replace.js.map
+
+/***/ }),
+
 /***/ "@wordpress/api-fetch":
 /*!**********************************!*\
   !*** external ["wp","apiFetch"] ***!
@@ -499,6 +590,16 @@ module.exports = window["wp"]["escapeHtml"];
 /***/ ((module) => {
 
 module.exports = window["wp"]["i18n"];
+
+/***/ }),
+
+/***/ "@wordpress/primitives":
+/*!************************************!*\
+  !*** external ["wp","primitives"] ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["primitives"];
 
 /***/ }),
 

@@ -68,7 +68,7 @@
   -webkit-box-orient: vertical;
 }
 .wp-block-openverse-connect-search .openverse-reset-selection {
-  margin-top: 15px !important;
+  display: none;
 }
 .wp-block-openverse-connect-search .openverse-error-message {
   color: #cc1818;
@@ -80,6 +80,80 @@
 .wp-block-openverse-connect-search .openverse-load-more {
   display: block !important;
   margin: 20px auto !important;
+}
+
+.openverse-media-settings-panel {
+  min-width: 320px;
+  width: 400px;
+  max-width: 90vw;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.openverse-media-settings-panel .components-base-control {
+  margin-bottom: 20px;
+  width: 100%;
+}
+.openverse-media-settings-panel .components-range-control {
+  margin-bottom: 24px;
+  width: 100%;
+}
+.openverse-media-settings-panel .components-base-control__help {
+  margin-top: 6px;
+  font-style: italic;
+  font-size: 12px;
+}
+.openverse-media-settings-panel .components-text-control__input {
+  width: 100%;
+}
+.openverse-media-settings-panel .components-select-control__input {
+  width: 100%;
+}
+.openverse-media-settings-panel::before {
+  content: "Media Settings";
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.openverse-media-settings-panel .components-range-control__slider {
+  width: 100%;
+}
+.openverse-media-settings-panel .components-toggle-control {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.openverse-media-settings-panel .components-text-control__input {
+  padding: 8px;
+  height: auto;
+}
+.openverse-media-settings-panel .components-base-control__field {
+  margin-bottom: 8px;
+}
+.openverse-media-settings-panel .components-base-control__label,
+.openverse-media-settings-panel .components-toggle-control__label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.openverse-media-settings-dropdown-content {
+  animation: openverseDropdownAppear 0.1s ease-out;
+}
+
+@keyframes openverseDropdownAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /*# sourceMappingURL=openverse-search.css.map*/

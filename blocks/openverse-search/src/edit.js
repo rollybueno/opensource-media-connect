@@ -11,10 +11,23 @@ import {
     SelectControl,
     Placeholder,
     ToggleControl,
-    RangeControl
+    RangeControl,
+    ToolbarGroup,
+    ToolbarButton,
+    Dropdown,
+    NavigableMenu
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
-import { useBlockProps } from '@wordpress/block-editor';
+import { 
+    useBlockProps,
+    BlockControls,
+    InspectorControls
+} from '@wordpress/block-editor';
+import { 
+    image as imageIcon,
+    replace,
+    cog
+} from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 import { escapeHTML } from '@wordpress/escape-html';
 
@@ -127,6 +140,71 @@ export default function Edit({ attributes, setAttributes }) {
         );
     };
 
+    const MediaSettingsPanel = () => (
+        <>
+            <ToggleControl
+                label={__('Show Attribution', 'openverse-connect')}
+                checked={showAttribution}
+                onChange={(value) => setAttributes({ showAttribution: value })}
+            />
+            
+            {mediaType === 'image' && (
+                <>
+                    <TextControl
+                        label={__('Alt Text', 'openverse-connect')}
+                        value={altText}
+                        onChange={(value) => setAttributes({ altText: sanitizeAltText(value) })}
+                        help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')}
+                    />
+                    
+                    <SelectControl
+                        label={__('Image Size', 'openverse-connect')}
+                        value={imageSize}
+                        options={imageSizeOptions}
+                        onChange={(value) => setAttributes({ imageSize: value })}
+                    />
+                    
+                    <RangeControl
+                        label={__('Maximum Width (%)', 'openverse-connect')}
+                        value={maxWidth}
+                        onChange={(value) => setAttributes({ maxWidth: value })}
+                        min={10}
+                        max={100}
+                    />
+                </>
+            )}
+        </>
+    );
+
+    const MediaSettingsDropdown = () => (
+        <Dropdown
+            className="openverse-media-settings-dropdown"
+            contentClassName="openverse-media-settings-dropdown-content"
+            popoverProps={{
+                placement: 'bottom-start',
+                offset: 20,
+                shift: true,
+                flip: true,
+                resize: true,
+                headerTitle: __('Media Settings', 'openverse-connect'),
+            }}
+            renderToggle={({ isOpen, onToggle }) => (
+                <ToolbarButton
+                    icon={cog}
+                    label={__('Media Settings', 'openverse-connect')}
+                    onClick={onToggle}
+                    aria-expanded={isOpen}
+                    isPressed={isOpen}
+                />
+            )}
+            renderContent={() => (
+                <div className="openverse-media-settings-panel">
+                    <MediaSettingsPanel />
+                </div>
+            )}
+        />
+    );
+
     const renderSelectedMedia = () => {
         if (!selectedMedia) return null;
 
@@ -146,14 +224,6 @@ export default function Edit({ attributes, setAttributes }) {
                 )}
                 
                 {showAttribution && renderAttribution(selectedMedia)}
-                
-                <Button 
-                    isSecondary
-                    onClick={resetSelection}
-                    className="openverse-reset-selection"
-                >
-                    {__('Choose Different Media', 'openverse-connect')}
-                </Button>
             </div>
         );
     };
@@ -243,50 +313,33 @@ export default function Edit({ attributes, setAttributes }) {
     };
 
     return (
-        <div {...blockProps}>
-            {selectedMedia ? (
-                <>
-                    {renderSelectedMedia()}
-                    
-                    <Panel>
-                        <PanelBody title={__('Media Settings', 'openverse-connect')} initialOpen={false}>
-                            <ToggleControl
-                                label={__('Show Attribution', 'openverse-connect')}
-                                checked={showAttribution}
-                                onChange={(value) => setAttributes({ showAttribution: value })}
-                            />
-                            
-                            {mediaType === 'image' && (
-                                <>
-                                    <TextControl
-                                        label={__('Alt Text', 'openverse-connect')}
-                                        value={altText}
-                                        onChange={(value) => setAttributes({ altText: sanitizeAltText(value) })}
-                                        help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')}
-                                    />
-                                    
-                                    <SelectControl
-                                        label={__('Image Size', 'openverse-connect')}
-                                        value={imageSize}
-                                        options={imageSizeOptions}
-                                        onChange={(value) => setAttributes({ imageSize: value })}
-                                    />
-                                    
-                                    <RangeControl
-                                        label={__('Maximum Width (%)', 'openverse-connect')}
-                                        value={maxWidth}
-                                        onChange={(value) => setAttributes({ maxWidth: value })}
-                                        min={10}
-                                        max={100}
-                                    />
-                                </>
-                            )}
-                        </PanelBody>
-                    </Panel>
-                </>
-            ) : (
-                renderSearchInterface()
+        <>
+            {selectedMedia && (
+                <BlockControls>
+                    <ToolbarGroup>
+                        <ToolbarButton
+                            icon={replace}
+                            label={__('Choose Different Media', 'openverse-connect')}
+                            onClick={resetSelection}
+                        />
+                        <MediaSettingsDropdown />
+                    </ToolbarGroup>
+                </BlockControls>
             )}
-        </div>
+            
+            <InspectorControls>
+                <PanelBody title={__('Media Settings', 'openverse-connect')} initialOpen={true}>
+                    <MediaSettingsPanel />
+                </PanelBody>
+            </InspectorControls>
+            
+            <div {...blockProps}>
+                {selectedMedia ? (
+                    renderSelectedMedia()
+                ) : (
+                    renderSearchInterface()
+                )}
+            </div>
+        </>
     );
 } 
