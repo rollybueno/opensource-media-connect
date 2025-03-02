@@ -77,10 +77,10 @@ class Openverse_Connect_Admin {
 	 * Render the settings page.
 	 */
 	public function render_settings_page() {
-		$client_id = get_option( 'openverse_connect_client_id' );
-		$client_secret = get_option( 'openverse_connect_client_secret' );
-		$access_token = get_option( 'openverse_connect_access_token' );
-		$is_connected = ! empty( $access_token );
+		$client_id       = get_option( 'openverse_connect_client_id' );
+		$client_secret   = get_option( 'openverse_connect_client_secret' );
+		$access_token    = get_option( 'openverse_connect_access_token' );
+		$is_connected    = ! empty( $access_token );
 		$has_credentials = ! empty( $client_id ) && ! empty( $client_secret );
 		?>
 		<div class="wrap">
@@ -120,13 +120,28 @@ class Openverse_Connect_Admin {
 						<?php esc_html_e( 'Register your WordPress site with Openverse', 'openverse-connect' ); ?>
 					</p>
 					<p class="description">
-						<?php esc_html_e( 'This will create a new application registration with Openverse automatically.', 'openverse-connect' ); ?>
+						<?php esc_html_e( 'This will create a new application registration with Openverse automatically. You can only have one application registration per email address.', 'openverse-connect' ); ?>
 					</p>
-					<p>
-						<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=openverse_register_app' ), 'openverse_register_app' ) ); ?>" class="button button-primary">
-							<?php esc_html_e( 'Register with Openverse', 'openverse-connect' ); ?>
-						</a>
-					</p>
+					<form method="get" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+						<input type="hidden" name="action" value="openverse_register_app">
+						<?php wp_nonce_field( 'openverse_register_app' ); ?>
+						
+						<p class="description">
+							<input type="email" 
+								name="email" 
+								id="openverse-connect-email" 
+								value="<?php echo esc_attr( get_option( 'admin_email' ) ); ?>" 
+								placeholder="<?php esc_attr_e( 'Your email address', 'openverse-connect' ); ?>"
+								required
+								class="regular-text"
+							>
+						</p>
+						<p>
+							<button type="submit" class="button button-primary">
+								<?php esc_html_e( 'Register with Openverse', 'openverse-connect' ); ?>
+							</button>
+						</p>
+					</form>
 				<?php endif; ?>
 
 				<?php if ( $has_credentials ) : ?>
@@ -199,9 +214,19 @@ class Openverse_Connect_Admin {
 
 		check_admin_referer( 'openverse_register_app' );
 
+		if ( ! isset( $_GET['email'] ) ) {
+			wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=missing_email' ) );
+			exit;
+		}
+
 		$site_name = get_bloginfo( 'name' );
-		$site_url = get_site_url();
-		$admin_email = get_option( 'admin_email' );
+		$site_url  = get_site_url();
+		$email     = sanitize_email( wp_unslash( $_GET['email'] ) );
+
+		if ( ! is_email( $email ) ) {
+			wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=invalid_email' ) );
+			exit;
+		}
 
 		$response = wp_remote_post(
 			'https://api.openverse.engineering/v1/auth_tokens/register/',
@@ -213,7 +238,7 @@ class Openverse_Connect_Admin {
 						$site_name,
 						$site_url
 					),
-					'email'        => $admin_email,
+					'email'        => $email,
 					'redirect_uri' => admin_url( 'admin-post.php?action=openverse_connect_oauth' ),
 				),
 			)
@@ -226,6 +251,12 @@ class Openverse_Connect_Admin {
 
 		$body = json_decode( wp_remote_retrieve_body( $response ), true );
 		if ( empty( $body['client_id'] ) || empty( $body['client_secret'] ) ) {
+			if( isset( $body['name'][0] ) ) {
+				if( $body['name'][0] === 'o auth2 registration with this name already exists.' ) { 
+					wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=email_already_registered' ) );
+					exit;
+				}
+			}
 			wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=invalid_registration_response' ) );
 			exit;
 		}
@@ -233,8 +264,48 @@ class Openverse_Connect_Admin {
 		update_option( 'openverse_connect_client_id', $body['client_id'] );
 		update_option( 'openverse_connect_client_secret', $body['client_secret'] );
 
-		wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&registered=1' ) );
+		// After successful registration, get a client credentials token.
+		$token = $this->get_client_credentials_token();
+		if ( is_wp_error( $token ) ) {
+			wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=token_error' ) );
+			exit;
+		}
+
+		update_option( 'openverse_connect_access_token', $token );
+		wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&registered=1&connected=1' ) );
 		exit;
+	}
+
+	/**
+	 * Get access token using client credentials grant.
+	 *
+	 * @return string|WP_Error Access token or error.
+	 */
+	private function get_client_credentials_token() {
+		$client_id     = get_option( 'openverse_connect_client_id' );
+		$client_secret = get_option( 'openverse_connect_client_secret' );
+
+		$response = wp_remote_post(
+			'https://api.openverse.engineering/v1/auth/oauth/token',
+			array(
+				'body' => array(
+					'grant_type'    => 'client_credentials',
+					'client_id'     => $client_id,
+					'client_secret' => $client_secret,
+				),
+			)
+		);
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		$body = json_decode( wp_remote_retrieve_body( $response ), true );
+		if ( empty( $body['access_token'] ) ) {
+			return new WP_Error( 'invalid_token', __( 'Invalid response from Openverse', 'openverse-connect' ) );
+		}
+
+		return $body['access_token'];
 	}
 
 	/**
@@ -243,9 +314,9 @@ class Openverse_Connect_Admin {
 	 * @return string The OAuth URL.
 	 */
 	private function get_oauth_url() {
-		$client_id = get_option( 'openverse_connect_client_id' );
+		$client_id    = get_option( 'openverse_connect_client_id' );
 		$redirect_uri = admin_url( 'admin-post.php?action=openverse_connect_oauth' );
-		$state = wp_create_nonce( 'openverse_connect_oauth' );
+		$state        = wp_create_nonce( 'openverse_connect_oauth' );
 
 		return add_query_arg(
 			array(
@@ -285,7 +356,7 @@ class Openverse_Connect_Admin {
 			exit;
 		}
 
-		$code = sanitize_text_field( wp_unslash( $_GET['code'] ) );
+		$code  = sanitize_text_field( wp_unslash( $_GET['code'] ) );
 		$token = $this->get_access_token( $code );
 		if ( is_wp_error( $token ) ) {
 			wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=token_error' ) );
@@ -304,9 +375,9 @@ class Openverse_Connect_Admin {
 	 * @return string|WP_Error Access token or error.
 	 */
 	private function get_access_token( $code ) {
-		$client_id = get_option( 'openverse_connect_client_id' );
+		$client_id     = get_option( 'openverse_connect_client_id' );
 		$client_secret = get_option( 'openverse_connect_client_secret' );
-		$redirect_uri = admin_url( 'admin-post.php?action=openverse_connect_oauth' );
+		$redirect_uri  = admin_url( 'admin-post.php?action=openverse_connect_oauth' );
 
 		$response = wp_remote_post(
 			'https://api.openverse.engineering/v1/auth/oauth/token',
@@ -369,6 +440,12 @@ class Openverse_Connect_Admin {
 		if ( isset( $_GET['error'] ) ) {
 			$error_message = '';
 			switch ( $_GET['error'] ) {
+				case 'missing_email':
+					$error_message = __( 'Email address is required.', 'openverse-connect' );
+					break;
+				case 'invalid_email':
+					$error_message = __( 'Please enter a valid email address.', 'openverse-connect' );
+					break;
 				case 'registration_failed':
 					$error_message = __( 'Failed to register with Openverse. Please try again.', 'openverse-connect' );
 					break;
@@ -383,6 +460,9 @@ class Openverse_Connect_Admin {
 					break;
 				case 'token_error':
 					$error_message = __( 'Error obtaining access token.', 'openverse-connect' );
+					break;
+				case 'email_already_registered':
+					$error_message = __( 'An application registration with this email address already exists.', 'openverse-connect' );
 					break;
 			}
 			?>

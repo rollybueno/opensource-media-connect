@@ -60,4 +60,4 @@ register_activation_hook( __FILE__, 'openverse_connect_activate' );
 function openverse_connect_deactivate() {
 	// Cleanup if needed.
 }
-register_deactivation_hook( __FILE__, 'openverse_connect_deactivate' ); 
+register_deactivation_hook( __FILE__, 'openverse_connect_deactivate' );
