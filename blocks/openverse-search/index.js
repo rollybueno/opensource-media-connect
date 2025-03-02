@@ -144,7 +144,9 @@ registerBlockType('openverse-connect/search', {
                             {__('Your browser does not support the audio element.', 'openverse-connect')}
                         </audio>
                     )}
-                    {renderAttribution(selectedMedia)}
+                    <div className="openverse-attribution">
+                        {renderAttribution(selectedMedia)}
+                    </div>
                 </div>
             );
         };
@@ -203,7 +205,6 @@ registerBlockType('openverse-connect/search', {
                     <>
                         {renderSelectedMedia()}
                         <Button
-                            isSecondary
                             onClick={() => setAttributes({ selectedMedia: null })}
                         >
                             {__('Change Media', 'openverse-connect')}

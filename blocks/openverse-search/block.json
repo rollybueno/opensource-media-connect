@@ -38,6 +38,10 @@
     "maxWidth": {
       "type": "number",
       "default": 100
+    },
+    "altText": {
+      "type": "string",
+      "default": ""
     }
   },
   "editorScript": "file:./index.js",

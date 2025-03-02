@@ -16,6 +16,7 @@ import {
 import { useState } from '@wordpress/element';
 import { useBlockProps } from '@wordpress/block-editor';
 import apiFetch from '@wordpress/api-fetch';
+import { escapeHTML } from '@wordpress/escape-html';
 
 /**
  * Edit component for the Openverse Search block.
@@ -25,7 +26,7 @@ import apiFetch from '@wordpress/api-fetch';
  */
 export default function Edit({ attributes, setAttributes }) {
     const blockProps = useBlockProps();
-    const { query, mediaType, license, selectedMedia, showAttribution, imageSize, maxWidth } = attributes;
+    const { query, mediaType, license, selectedMedia, showAttribution, imageSize, maxWidth, altText } = attributes;
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
     const [error, setError] = useState(null);
@@ -73,8 +74,17 @@ export default function Edit({ attributes, setAttributes }) {
         performSearch(false);
     };
 
+    const sanitizeAltText = (text) => {
+        const strippedText = text.replace(/<\/?[^>]+(>|$)/g, '');
+        return escapeHTML(strippedText);
+    };
+
     const selectMedia = (media) => {
-        setAttributes({ selectedMedia: media });
+        const defaultAltText = media.title || '';
+        setAttributes({ 
+            selectedMedia: media,
+            altText: altText || sanitizeAltText(defaultAltText)
+        });
     };
 
     const resetSelection = () => {
@@ -125,7 +135,7 @@ export default function Edit({ attributes, setAttributes }) {
                 {mediaType === 'image' ? (
                     <img 
                         src={selectedMedia.thumbnail || selectedMedia.url} 
-                        alt={selectedMedia.title}
+                        alt={altText || selectedMedia.title || ''}
                         className={`size-${imageSize}`}
                     />
                 ) : (
@@ -248,6 +258,13 @@ export default function Edit({ attributes, setAttributes }) {
                             
                             {mediaType === 'image' && (
                                 <>
+                                    <TextControl
+                                        label={__('Alt Text', 'openverse-connect')}
+                                        value={altText}
+                                        onChange={(value) => setAttributes({ altText: sanitizeAltText(value) })}
+                                        help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')}
+                                    />
+                                    
                                     <SelectControl
                                         label={__('Image Size', 'openverse-connect')}
                                         value={imageSize}

@@ -11,7 +11,14 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 export default function Save({ attributes }) {
     const blockProps = useBlockProps.save();
-    const { selectedMedia, showAttribution, mediaType, imageSize, maxWidth } = attributes;
+    const { 
+        selectedMedia, 
+        showAttribution, 
+        mediaType, 
+        imageSize, 
+        maxWidth,
+        altText 
+    } = attributes;
 
     if (!selectedMedia) {
         return <div {...blockProps}></div>;
@@ -35,7 +42,7 @@ export default function Save({ attributes }) {
             {mediaType === 'image' ? (
                 <img 
                     src={selectedMedia.url} 
-                    alt={selectedMedia.title}
+                    alt={altText || selectedMedia.title || ''}
                     className={`size-${imageSize}`}
                 />
             ) : (

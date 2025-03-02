@@ -84,7 +84,7 @@ class Openverse_Connect_API {
 			);
 		}
 
-		$api_url = 'https://api.openverse.engineering/v1/' . $media_type . 's/';
+		$api_url = 'https://api.openverse.org/v1/' . $media_type . 's/';
 		$api_url = add_query_arg(
 			array(
 				'q'        => $query,
