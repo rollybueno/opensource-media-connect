@@ -77,11 +77,12 @@ class Openverse_Connect_Admin {
 	 * Render the settings page.
 	 */
 	public function render_settings_page() {
-		$client_id       = get_option( 'openverse_connect_client_id' );
-		$client_secret   = get_option( 'openverse_connect_client_secret' );
-		$access_token    = get_option( 'openverse_connect_access_token' );
-		$is_connected    = ! empty( $access_token );
-		$has_credentials = ! empty( $client_id ) && ! empty( $client_secret );
+		$client_id               = get_option( 'openverse_connect_client_id' );
+		$client_secret           = get_option( 'openverse_connect_client_secret' );
+		$access_token            = get_option( 'openverse_connect_access_token' );
+		$is_connected            = ! empty( $access_token );
+		$has_credentials         = ! empty( $client_id ) && ! empty( $client_secret );
+		$show_manual_credentials = isset( $_GET['error'] ) && 'email_already_registered' === $_GET['error'];
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
@@ -125,7 +126,7 @@ class Openverse_Connect_Admin {
 					<form method="get" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<input type="hidden" name="action" value="openverse_register_app">
 						<?php wp_nonce_field( 'openverse_register_app' ); ?>
-						
+
 						<p class="description">
 							<input type="email" 
 								name="email" 
@@ -136,9 +137,36 @@ class Openverse_Connect_Admin {
 								class="regular-text"
 							>
 						</p>
+
+						<?php if ( $show_manual_credentials ) : ?>
+							<div class="manual-credentials">
+								<p class="description">
+									<?php esc_html_e( 'An application is already registered with this email. If you already have credentials, you can enter them below:', 'openverse-connect' ); ?>
+								</p>
+								<p>
+									<label for="openverse-connect-client-id"><?php esc_html_e( 'Client ID', 'openverse-connect' ); ?></label>
+									<input type="text"
+										name="client_id"
+										id="openverse-connect-client-id"
+										class="regular-text"
+										placeholder="<?php esc_attr_e( 'Enter your existing Client ID', 'openverse-connect' ); ?>"
+									>
+								</p>
+								<p>
+									<label for="openverse-connect-client-secret"><?php esc_html_e( 'Client Secret', 'openverse-connect' ); ?></label>
+									<input type="password"
+										name="client_secret"
+										id="openverse-connect-client-secret"
+										class="regular-text"
+										placeholder="<?php esc_attr_e( 'Enter your existing Client Secret', 'openverse-connect' ); ?>"
+									>
+								</p>
+							</div>
+						<?php endif; ?>
+
 						<p>
 							<button type="submit" class="button button-primary">
-								<?php esc_html_e( 'Register with Openverse', 'openverse-connect' ); ?>
+								<?php echo $show_manual_credentials ? esc_html__( 'Save Credentials', 'openverse-connect' ) : esc_html__( 'Register with Openverse', 'openverse-connect' ); ?>
 							</button>
 						</p>
 					</form>
@@ -200,6 +228,21 @@ class Openverse_Connect_Admin {
 				font-style: italic;
 				margin: 5px 0 15px;
 			}
+			.manual-credentials {
+				margin: 15px 0;
+				padding: 15px;
+				background: #f8f9fa;
+				border: 1px solid #e5e7eb;
+				border-radius: 4px;
+			}
+			.manual-credentials label {
+				display: block;
+				margin-bottom: 5px;
+				font-weight: 600;
+			}
+			.manual-credentials input {
+				margin-bottom: 15px;
+			}
 		</style>
 		<?php
 	}
@@ -219,14 +262,37 @@ class Openverse_Connect_Admin {
 			exit;
 		}
 
-		$site_name = get_bloginfo( 'name' );
-		$site_url  = get_site_url();
-		$email     = sanitize_email( wp_unslash( $_GET['email'] ) );
+		$email = sanitize_email( wp_unslash( $_GET['email'] ) );
 
 		if ( ! is_email( $email ) ) {
 			wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=invalid_email' ) );
 			exit;
 		}
+
+		// Check if manual credentials were provided.
+		if ( isset( $_GET['client_id'], $_GET['client_secret'] ) ) {
+			$client_id     = sanitize_text_field( wp_unslash( $_GET['client_id'] ) );
+			$client_secret = sanitize_text_field( wp_unslash( $_GET['client_secret'] ) );
+
+			// Verify the credentials by attempting to get a token.
+			update_option( 'openverse_connect_client_id', $client_id );
+			update_option( 'openverse_connect_client_secret', $client_secret );
+
+			$token = $this->get_client_credentials_token();
+			if ( is_wp_error( $token ) ) {
+				delete_option( 'openverse_connect_client_id' );
+				delete_option( 'openverse_connect_client_secret' );
+				wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=invalid_credentials' ) );
+				exit;
+			}
+
+			update_option( 'openverse_connect_access_token', $token );
+			wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&registered=1&connected=1' ) );
+			exit;
+		}
+
+		$site_name = get_bloginfo( 'name' );
+		$site_url  = get_site_url();
 
 		$response = wp_remote_post(
 			'https://api.openverse.engineering/v1/auth_tokens/register/',
@@ -251,11 +317,9 @@ class Openverse_Connect_Admin {
 
 		$body = json_decode( wp_remote_retrieve_body( $response ), true );
 		if ( empty( $body['client_id'] ) || empty( $body['client_secret'] ) ) {
-			if( isset( $body['name'][0] ) ) {
-				if( $body['name'][0] === 'o auth2 registration with this name already exists.' ) { 
-					wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=email_already_registered' ) );
-					exit;
-				}
+			if ( isset( $body['name'][0] ) && 'o auth2 registration with this name already exists.' === $body['name'][0] ) {
+				wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=email_already_registered' ) );
+				exit;
 			}
 			wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=invalid_registration_response' ) );
 			exit;
@@ -286,7 +350,7 @@ class Openverse_Connect_Admin {
 		$client_secret = get_option( 'openverse_connect_client_secret' );
 
 		$response = wp_remote_post(
-			'https://api.openverse.engineering/v1/auth/oauth/token',
+			'https://api.openverse.org/v1/auth_tokens/token/',
 			array(
 				'body' => array(
 					'grant_type'    => 'client_credentials',
@@ -462,7 +526,10 @@ class Openverse_Connect_Admin {
 					$error_message = __( 'Error obtaining access token.', 'openverse-connect' );
 					break;
 				case 'email_already_registered':
-					$error_message = __( 'An application registration with this email address already exists.', 'openverse-connect' );
+					$error_message = __( 'An application is already registered with this email. You can enter your existing credentials below.', 'openverse-connect' );
+					break;
+				case 'invalid_credentials':
+					$error_message = __( 'The provided credentials are invalid. Please check and try again.', 'openverse-connect' );
 					break;
 			}
 			?>
