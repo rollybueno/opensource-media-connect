@@ -1,14 +1,12 @@
 <?php
 /**
  * Plugin Name: Openverse Connect
- * Plugin URI: https://wordpress.org/plugins/openverse-connect/
- * Description: OpenVerse Connect seamlessly integrates Openverse with your WordPress site, enabling you to effortlessly search, browse, and embed high-quality, copyright-free media content directly into your posts and pages. Whether you're adding images, audio, or video, OpenVerse Connect ensures that your site stays rich with diverse, free-to-use media.
+ * Description: Connect WordPress with Openverse to search and use openly licensed media.
  * Version: 1.0.0
- * Author: Rolly G. Bueno Jr.
- * Author URI: https://github.com/rolygbueno
- * License: GPL v2 or later
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Author: Your Name
  * Text Domain: openverse-connect
+ * Domain Path: /languages
+ * License: GPL-2.0+
  *
  * @package Openverse_Connect
  */
@@ -22,19 +20,18 @@ define( 'OPENVERSE_CONNECT_VERSION', '1.0.0' );
 define( 'OPENVERSE_CONNECT_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'OPENVERSE_CONNECT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-// Include required files.
-require_once OPENVERSE_CONNECT_PLUGIN_DIR . 'includes/class-openverse-connect-admin.php';
+// Include the main plugin class.
+require_once OPENVERSE_CONNECT_PLUGIN_DIR . 'includes/class-openverse-connect.php';
 
 /**
- * Initialize the plugin.
- *
- * @return void
+ * Main function to initialize the plugin.
  */
 function openverse_connect_init() {
-	// Initialize admin.
-	new Openverse_Connect_Admin();
+	return Openverse_Connect::get_instance();
 }
-add_action( 'plugins_loaded', 'openverse_connect_init' );
+
+// Initialize the plugin.
+$GLOBALS['openverse_connect'] = openverse_connect_init();
 
 /**
  * Activation hook callback.
@@ -61,3 +58,53 @@ function openverse_connect_deactivate() {
 	// Cleanup if needed.
 }
 register_deactivation_hook( __FILE__, 'openverse_connect_deactivate' );
+
+/**
+ * Register block scripts.
+ */
+function openverse_connect_register_block() {
+	// Check if build directory exists
+	$build_dir = OPENVERSE_CONNECT_PLUGIN_DIR . 'build/openverse-search';
+	
+	if (file_exists($build_dir)) {
+		// Register block from build directory
+		register_block_type($build_dir);
+	} else {
+		// Fallback to manual registration for development
+		wp_register_script(
+			'openverse-connect-block',
+			OPENVERSE_CONNECT_PLUGIN_URL . 'blocks/openverse-search/index.js',
+			array( 
+				'wp-blocks', 
+				'wp-element', 
+				'wp-editor', 
+				'wp-components', 
+				'wp-i18n', 
+				'wp-api-fetch' 
+			),
+			filemtime( OPENVERSE_CONNECT_PLUGIN_DIR . 'blocks/openverse-search/index.js' ),
+			true
+		);
+
+		wp_register_style(
+			'openverse-connect-block-editor',
+			OPENVERSE_CONNECT_PLUGIN_URL . 'blocks/openverse-search/editor.css',
+			array( 'wp-edit-blocks' ),
+			filemtime( OPENVERSE_CONNECT_PLUGIN_DIR . 'blocks/openverse-search/editor.css' )
+		);
+
+		wp_register_style(
+			'openverse-connect-block',
+			OPENVERSE_CONNECT_PLUGIN_URL . 'blocks/openverse-search/style.css',
+			array(),
+			filemtime( OPENVERSE_CONNECT_PLUGIN_DIR . 'blocks/openverse-search/style.css' )
+		);
+
+		register_block_type( 'openverse-connect/search', array(
+			'editor_script' => 'openverse-connect-block',
+			'editor_style'  => 'openverse-connect-block-editor',
+			'style'         => 'openverse-connect-block',
+		) );
+	}
+}
+add_action( 'init', 'openverse_connect_register_block' );

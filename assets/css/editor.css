@@ -1,0 +1,22 @@
+/* Additional global editor styles if needed */
+.openverse-connect-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+.openverse-connect-status .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.openverse-connect-status.connected .dashicons {
+    color: #46b450;
+}
+
+.openverse-connect-status.not-connected .dashicons {
+    color: #dc3232;
+} 

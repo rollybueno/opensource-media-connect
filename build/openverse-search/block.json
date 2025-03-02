@@ -1,0 +1,46 @@
+{
+  "apiVersion": 2,
+  "name": "openverse-connect/search",
+  "title": "Openverse Search",
+  "category": "media",
+  "icon": "search",
+  "description": "Search and insert media from Openverse",
+  "textdomain": "openverse-connect",
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "attributes": {
+    "query": {
+      "type": "string",
+      "default": ""
+    },
+    "mediaType": {
+      "type": "string",
+      "default": "image"
+    },
+    "license": {
+      "type": "string",
+      "default": "all"
+    },
+    "selectedMedia": {
+      "type": "object",
+      "default": null
+    },
+    "showAttribution": {
+      "type": "boolean",
+      "default": true
+    },
+    "imageSize": {
+      "type": "string",
+      "default": "medium"
+    },
+    "maxWidth": {
+      "type": "number",
+      "default": 100
+    }
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-openverse-search.css",
+  "editorStyle": "file:./openverse-search.css"
+} 

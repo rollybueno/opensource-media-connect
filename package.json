@@ -1,0 +1,28 @@
+{
+  "name": "openverse-connect",
+  "version": "1.0.0",
+  "description": "WordPress plugin to connect with Openverse",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "wp-scripts build --webpack-copy-php --webpack-src-dir=blocks/openverse-search/src",
+    "start": "wp-scripts start --webpack-copy-php --webpack-src-dir=blocks/openverse-search/src",
+    "format": "wp-scripts format",
+    "lint:js": "wp-scripts lint-js",
+    "lint:style": "wp-scripts lint-style",
+    "packages-update": "wp-scripts packages-update"
+  },
+  "author": "Your Name",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "@wordpress/scripts": "^24.0.0",
+    "copy-webpack-plugin": "^13.0.0"
+  },
+  "dependencies": {
+    "@wordpress/api-fetch": "^6.0.0",
+    "@wordpress/block-editor": "^10.0.0",
+    "@wordpress/blocks": "^11.0.0",
+    "@wordpress/components": "^22.0.0",
+    "@wordpress/element": "^4.0.0",
+    "@wordpress/i18n": "^4.0.0"
+  }
+}

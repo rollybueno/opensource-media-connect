@@ -1,0 +1,30 @@
+.wp-block-openverse-connect-search {
+    margin-bottom: 2em;
+    
+    .openverse-selected-media {
+        margin-bottom: 20px;
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            
+            &.size-small {
+                max-height: 200px;
+            }
+            
+            &.size-medium {
+                max-height: 400px;
+            }
+            
+            &.size-large {
+                max-height: 600px;
+            }
+        }
+    }
+    
+    .openverse-attribution {
+        margin-top: 10px;
+        font-style: italic;
+        color: #555;
+    }
+} 
