@@ -38,12 +38,13 @@ export default function Save({ attributes }) {
     };
 
     return (
-        <div {...blockProps} style={{ maxWidth: `${maxWidth}%` }}>
+        <figure {...blockProps}>
             {mediaType === 'image' ? (
                 <img 
                     src={selectedMedia.url} 
                     alt={altText || selectedMedia.title || ''}
                     className={`size-${imageSize}`}
+                    style={{ maxWidth: `${maxWidth}%` }}
                 />
             ) : (
                 <audio controls>
@@ -53,6 +54,6 @@ export default function Save({ attributes }) {
             )}
             
             {renderAttribution()}
-        </div>
+        </figure>
     );
 } 
