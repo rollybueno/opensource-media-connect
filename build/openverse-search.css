@@ -82,7 +82,7 @@
   margin: 20px auto !important;
 }
 
-.openverse-media-settings-panel {
+.openverse-media-settings-dropdown-content {
   min-width: 320px;
   width: 400px;
   max-width: 90vw;
@@ -91,26 +91,26 @@
   border: 1px solid #e0e0e0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-.openverse-media-settings-panel .components-base-control {
+.openverse-media-settings-dropdown-content .components-base-control {
   margin-bottom: 20px;
   width: 100%;
 }
-.openverse-media-settings-panel .components-range-control {
+.openverse-media-settings-dropdown-content .components-range-control {
   margin-bottom: 24px;
   width: 100%;
 }
-.openverse-media-settings-panel .components-base-control__help {
+.openverse-media-settings-dropdown-content .components-base-control__help {
   margin-top: 6px;
   font-style: italic;
   font-size: 12px;
 }
-.openverse-media-settings-panel .components-text-control__input {
+.openverse-media-settings-dropdown-content .components-text-control__input {
   width: 100%;
 }
-.openverse-media-settings-panel .components-select-control__input {
+.openverse-media-settings-dropdown-content .components-select-control__input {
   width: 100%;
 }
-.openverse-media-settings-panel::before {
+.openverse-media-settings-dropdown-content::before {
   content: "Media Settings";
   display: block;
   font-size: 16px;
@@ -119,23 +119,23 @@
   padding-bottom: 12px;
   border-bottom: 1px solid #e0e0e0;
 }
-.openverse-media-settings-panel .components-range-control__slider {
+.openverse-media-settings-dropdown-content .components-range-control__slider {
   width: 100%;
 }
-.openverse-media-settings-panel .components-toggle-control {
+.openverse-media-settings-dropdown-content .components-toggle-control {
   margin-bottom: 24px;
   padding-bottom: 16px;
   border-bottom: 1px solid #f0f0f0;
 }
-.openverse-media-settings-panel .components-text-control__input {
+.openverse-media-settings-dropdown-content .components-text-control__input {
   padding: 8px;
   height: auto;
 }
-.openverse-media-settings-panel .components-base-control__field {
+.openverse-media-settings-dropdown-content .components-base-control__field {
   margin-bottom: 8px;
 }
-.openverse-media-settings-panel .components-base-control__label,
-.openverse-media-settings-panel .components-toggle-control__label {
+.openverse-media-settings-dropdown-content .components-base-control__label,
+.openverse-media-settings-dropdown-content .components-toggle-control__label {
   font-weight: 500;
   margin-bottom: 6px;
   display: block;

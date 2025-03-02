@@ -5,8 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { 
     TextControl, 
     Button, 
-    Spinner, 
-    Panel, 
+    Spinner,
     PanelBody,
     SelectControl,
     Placeholder,
@@ -14,8 +13,7 @@ import {
     RangeControl,
     ToolbarGroup,
     ToolbarButton,
-    Dropdown,
-    NavigableMenu
+    Dropdown
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { 
@@ -198,7 +196,7 @@ export default function Edit({ attributes, setAttributes }) {
                 />
             )}
             renderContent={() => (
-                <div className="openverse-media-settings-panel">
+                <div className="openverse-media-settings-panel" style={{ minWidth: '300px', maxWidth: '500px', height: 'auto', padding: '20px', margin: 'auto' }}>
                     <MediaSettingsPanel />
                 </div>
             )}
@@ -226,6 +224,11 @@ export default function Edit({ attributes, setAttributes }) {
                 {showAttribution && renderAttribution(selectedMedia)}
             </div>
         );
+    };
+
+    const cancelSearch = () => {
+        setAttributes({ query: '', mediaType: 'image', license: 'all', selectedMedia: null });
+        performSearch(false);
     };
 
     const renderSearchInterface = () => {
@@ -258,12 +261,19 @@ export default function Edit({ attributes, setAttributes }) {
                             placeholder={__('Enter search terms...', 'openverse-connect')}
                         />
                         
-                        <Button 
-                            isPrimary
+                        <Button
                             onClick={() => performSearch(true)}
                             disabled={!query.trim() || isSearching}
+                            className="button button-primary"
                         >
                             {isSearching ? <Spinner /> : __('Search', 'openverse-connect')}
+                        </Button> &nbsp;
+
+                        <Button
+                            onClick={() => cancelSearch()}
+                            className="button button-secondary"
+                        >         
+                            {__('Cancel', 'openverse-connect')}
                         </Button>
                     </div>
                 </Placeholder>
@@ -297,11 +307,10 @@ export default function Edit({ attributes, setAttributes }) {
                         </div>
                         
                         {hasMore && (
-                            <Button 
-                                isSecondary
+                            <Button
                                 onClick={loadMore}
                                 disabled={isSearching}
-                                className="openverse-load-more"
+                                className="openverse-load-more button button-secondary"
                             >
                                 {isSearching ? <Spinner /> : __('Load More', 'openverse-connect')}
                             </Button>
