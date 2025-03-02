@@ -153,10 +153,10 @@ export default function Edit({ attributes, setAttributes }) {
         if (!media) return null;
         
         return (
-            <div className="wp-element-caption openverse-attribution">
+            <figcaption className="wp-element-caption openverse-attribution">
                     {__('Creator:', 'openverse-connect')} {media.creator || __('Unknown', 'openverse-connect')} | 
                     {__('License:', 'openverse-connect')} {media.license}
-            </div>
+            </figcaption>
         );
     };
 
@@ -344,10 +344,14 @@ export default function Edit({ attributes, setAttributes }) {
         );
     };
 
+    const stopPropagation = (event) => {
+        event.stopPropagation();
+    };
+
     return (
         <>
             {selectedMedia && !isSearchInterfaceOpen && (
-                <BlockControls>
+                <BlockControls onClick={stopPropagation}>
                     <ToolbarGroup>
                         <ToolbarButton
                             icon={replace}
