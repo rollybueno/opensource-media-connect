@@ -48,16 +48,17 @@ function openverse_connect_activate() {
 register_activation_hook( __FILE__, 'openverse_connect_activate' );
 
 /**
- * Deactivation hook callback.
- *
- * Performs cleanup when the plugin is deactivated.
- *
- * @return void
+ * Clean up plugin data when the plugin is deleted.
  */
-function openverse_connect_deactivate() {
-	// Cleanup if needed.
+function openverse_connect_uninstall() {
+	delete_option( 'openverse_connect_client_id' );
+	delete_option( 'openverse_connect_client_secret' );
+	delete_option( 'openverse_connect_access_token' );
 }
-register_deactivation_hook( __FILE__, 'openverse_connect_deactivate' );
+
+// Register uninstall hook.
+register_uninstall_hook( __FILE__, 'openverse_connect_uninstall' );
+
 
 /**
  * Register block scripts.
@@ -101,24 +102,3 @@ function openverse_connect_register_block() {
 	}
 }
 add_action( 'init', 'openverse_connect_register_block' );
-
-// Add this near the top of your file, after the plugin header
-add_action(
-	'admin_notices',
-	function() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-
-		$build_dir  = OPENVERSE_CONNECT_PLUGIN_DIR . 'build/openverse-search';
-		$source_dir = OPENVERSE_CONNECT_PLUGIN_DIR . 'blocks/openverse-search';
-
-		$message  = '<strong>Openverse Connect Debug:</strong><br>';
-		$message .= 'Build directory exists: ' . ( file_exists( $build_dir ) ? 'Yes' : 'No' ) . '<br>';
-		$message .= 'Build block.json exists: ' . ( file_exists( $build_dir . '/block.json' ) ? 'Yes' : 'No' ) . '<br>';
-		$message .= 'Source directory exists: ' . ( file_exists( $source_dir ) ? 'Yes' : 'No' ) . '<br>';
-		$message .= 'Source block.json exists: ' . ( file_exists( $source_dir . '/block.json' ) ? 'Yes' : 'No' ) . '<br>';
-
-		echo '<div class="notice notice-info"><p>' . $message . '</p></div>';
-	}
-);
