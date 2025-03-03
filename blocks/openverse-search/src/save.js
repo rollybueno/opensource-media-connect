@@ -13,26 +13,36 @@ export default function Save({ attributes }) {
     const blockProps = useBlockProps.save();
     const { 
         selectedMedia, 
-        showAttribution, 
-        mediaType, 
+        showAttribution,
         imageSize, 
         maxWidth,
-        altText 
+        altText,
+        imageCaption
     } = attributes;
 
     if (!selectedMedia) {
         return <div {...blockProps}></div>;
     }
 
-    const renderAttribution = () => {
-        if (!showAttribution) return null;
+    const renderCaptionAttribution = () => {
+        if (!showAttribution && !imageCaption) return null;
         
         return (
             <figcaption className="wp-element-caption openverse-attribution">
-                    Creator: {selectedMedia.creator || 'Unknown'} | 
-                    License: {selectedMedia.license}
+                {imageCaption && (
+                    <>
+                        {imageCaption}
+                    </>
+                )}
+                {showAttribution && (
+                    <>
+                        <br />
+                        Creator: {selectedMedia.creator || 'Unknown'} | 
+                        License: {selectedMedia.license}
+                    </>
+                )}
             </figcaption>
-        );
+        )
     };
 
     return (
@@ -44,7 +54,7 @@ export default function Save({ attributes }) {
                 style={{ maxWidth: `${maxWidth}%` }}
             />
             
-            {renderAttribution()}
+            {renderCaptionAttribution()}
         </figure>
     );
 } 

@@ -12,8 +12,7 @@ import {
     ToggleControl,
     RangeControl,
     ToolbarGroup,
-    ToolbarButton,
-    Dropdown
+    ToolbarButton
 } from '@wordpress/components';
 import { useState, useRef } from '@wordpress/element';
 import { 
@@ -23,8 +22,7 @@ import {
 } from '@wordpress/block-editor';
 import { 
     image as imageIcon,
-    replace,
-    cog
+    replace
 } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 import { escapeHTML } from '@wordpress/escape-html';
@@ -37,7 +35,7 @@ import { escapeHTML } from '@wordpress/escape-html';
  */
 export default function Edit({ attributes, setAttributes }) {
     const blockProps = useBlockProps();
-    const { query, mediaType, license, selectedMedia, showAttribution, imageSize, maxWidth, altText } = attributes;
+    const { query, mediaType, license, selectedMedia, showAttribution, imageSize, maxWidth, altText, imageCaption } = attributes;
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
     const [error, setError] = useState(null);
@@ -87,16 +85,13 @@ export default function Edit({ attributes, setAttributes }) {
         performSearch(false);
     };
 
-    const sanitizeAltText = (text) => {
-        const strippedText = text.replace(/<\/?[^>]+(>|$)/g, '');
-        return escapeHTML(strippedText);
-    };
-
     const selectMedia = (media) => {
         const defaultAltText = media.title || '';
+        const defaultCaption = media.caption || '';
         setAttributes({ 
             selectedMedia: media,
-            altText: altText || sanitizeAltText(defaultAltText)
+            altText: altText || escapeHTML(defaultAltText),
+            imageCaption: defaultCaption || escapeHTML(defaultCaption)
         });
     };
 
@@ -145,6 +140,7 @@ export default function Edit({ attributes, setAttributes }) {
 
     const MediaSettingsPanel = () => {
         const [localAltText, setLocalAltText] = useState(altText || '');
+        const [localCaption, setLocalCaption] = useState(selectedMedia?.caption || '');
 
         return (
             <>
@@ -158,14 +154,36 @@ export default function Edit({ attributes, setAttributes }) {
                 />
                 
                 {mediaType === 'image' && (
-                    <TextControl
-                        label={__('Alt Text', 'openverse-connect')}
-                        value={localAltText}
-                        onChange={(value) => setLocalAltText(value)}
-                        onBlur={() => setAttributes({ altText: escapeHTML(localAltText) })}
-                        help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')}
-                        __nextHasNoMarginBottom={ true }
-                    />
+                    <>
+                        <TextControl
+                            label={__('Caption', 'openverse-connect')}
+                            value={localCaption}
+                            onChange={(value) => setLocalCaption(value)}
+                            onBlur={() => {
+                                if (selectedMedia) {
+                                    setAttributes({ 
+                                        selectedMedia: {
+                                            ...selectedMedia,
+                                            caption: escapeHTML(localCaption)
+                                        },
+                                        imageCaption: escapeHTML(localCaption)
+                                    });
+                                }
+                            }}
+                            help={__('Add a caption to display below the image.', 'openverse-connect')}
+                            __nextHasNoMarginBottom={ true }
+                        />
+                
+                        <TextControl
+                            label={__('Alt Text', 'openverse-connect')}
+                            value={localAltText}
+                            onChange={(value) => setLocalAltText(value)}
+                            onBlur={() => setAttributes({ altText: escapeHTML(localAltText) })}
+                            help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')}
+                            __nextHasNoMarginBottom={ true }
+                        />
+                        
+                    </>
                 )}
             </>
         );
@@ -176,14 +194,20 @@ export default function Edit({ attributes, setAttributes }) {
 
         return (
             <div className="openverse-selected-media">
-                <img 
-                    src={selectedMedia.thumbnail || selectedMedia.url} 
-                    alt={altText || selectedMedia.title || ''}
-                    className={`size-${imageSize}`}
-                    style={{ maxWidth: `${maxWidth}%` }}
-                />
-                
-                {showAttribution && renderAttribution(selectedMedia)}
+                <figure>
+                    <img 
+                        src={selectedMedia.thumbnail || selectedMedia.url} 
+                        alt={altText || selectedMedia.title || ''}
+                        className={`size-${imageSize}`}
+                        style={{ maxWidth: `${maxWidth}%` }}
+                    />
+                    {selectedMedia.caption && (
+                        <figcaption className="wp-element-caption">
+                            {selectedMedia.caption}
+                        </figcaption>
+                    )}
+                    {showAttribution && renderAttribution(selectedMedia)}
+                </figure>
             </div>
         );
     };

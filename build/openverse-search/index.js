@@ -68,7 +68,8 @@ function Edit({
     showAttribution,
     imageSize,
     maxWidth,
-    altText
+    altText,
+    imageCaption
   } = attributes;
   const [searchResults, setSearchResults] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)([]);
   const [isSearching, setIsSearching] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(false);
@@ -112,15 +113,13 @@ function Edit({
     setPage(page + 1);
     performSearch(false);
   };
-  const sanitizeAltText = text => {
-    const strippedText = text.replace(/<\/?[^>]+(>|$)/g, '');
-    return (0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_6__.escapeHTML)(strippedText);
-  };
   const selectMedia = media => {
     const defaultAltText = media.title || '';
+    const defaultCaption = media.caption || '';
     setAttributes({
       selectedMedia: media,
-      altText: altText || sanitizeAltText(defaultAltText)
+      altText: altText || (0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_6__.escapeHTML)(defaultAltText),
+      imageCaption: defaultCaption || (0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_6__.escapeHTML)(defaultCaption)
     });
   };
   const openSearchInterface = () => {
@@ -165,6 +164,7 @@ function Edit({
   };
   const MediaSettingsPanel = () => {
     const [localAltText, setLocalAltText] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(altText || '');
+    const [localCaption, setLocalCaption] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(selectedMedia?.caption || '');
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Show Attribution', 'openverse-connect'),
       checked: showAttribution,
@@ -174,7 +174,24 @@ function Edit({
         });
       },
       __nextHasNoMarginBottom: true
-    }), mediaType === 'image' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+    }), mediaType === 'image' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Caption', 'openverse-connect'),
+      value: localCaption,
+      onChange: value => setLocalCaption(value),
+      onBlur: () => {
+        if (selectedMedia) {
+          setAttributes({
+            selectedMedia: {
+              ...selectedMedia,
+              caption: (0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_6__.escapeHTML)(localCaption)
+            },
+            imageCaption: (0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_6__.escapeHTML)(localCaption)
+          });
+        }
+      },
+      help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Add a caption to display below the image.', 'openverse-connect'),
+      __nextHasNoMarginBottom: true
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alt Text', 'openverse-connect'),
       value: localAltText,
       onChange: value => setLocalAltText(value),
@@ -183,20 +200,22 @@ function Edit({
       }),
       help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect'),
       __nextHasNoMarginBottom: true
-    }));
+    })));
   };
   const renderSelectedMedia = () => {
     if (!selectedMedia) return null;
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "openverse-selected-media"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("figure", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
       src: selectedMedia.thumbnail || selectedMedia.url,
       alt: altText || selectedMedia.title || '',
       className: `size-${imageSize}`,
       style: {
         maxWidth: `${maxWidth}%`
       }
-    }), showAttribution && renderAttribution(selectedMedia));
+    }), selectedMedia.caption && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("figcaption", {
+      className: "wp-element-caption"
+    }, selectedMedia.caption), showAttribution && renderAttribution(selectedMedia)));
   };
   const renderSearchInterface = () => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -391,21 +410,21 @@ function Save({
   const {
     selectedMedia,
     showAttribution,
-    mediaType,
     imageSize,
     maxWidth,
-    altText
+    altText,
+    imageCaption
   } = attributes;
   if (!selectedMedia) {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       ...blockProps
     });
   }
-  const renderAttribution = () => {
-    if (!showAttribution) return null;
+  const renderCaptionAttribution = () => {
+    if (!showAttribution && !imageCaption) return null;
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("figcaption", {
       className: "wp-element-caption openverse-attribution"
-    }, "Creator: ", selectedMedia.creator || 'Unknown', " | License: ", selectedMedia.license);
+    }, imageCaption && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, imageCaption), showAttribution && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), "Creator: ", selectedMedia.creator || 'Unknown', " | License: ", selectedMedia.license));
   };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("figure", {
     ...blockProps
@@ -416,7 +435,7 @@ function Save({
     style: {
       maxWidth: `${maxWidth}%`
     }
-  }), renderAttribution());
+  }), renderCaptionAttribution());
 }
 
 /***/ }),
