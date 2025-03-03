@@ -16,9 +16,9 @@ import '../block.json';
 
 // Register the block
 registerBlockType('openverse-connect/search', {
-    title: __('Openverse Search', 'openverse-connect'),
+    title: __('Openverse Image', 'openverse-connect'),
     description: __('Search and insert media from Openverse', 'openverse-connect'),
-    icon: 'search',
+    icon: 'image',
     category: 'media',
     keywords: [
         __('openverse', 'openverse-connect'),

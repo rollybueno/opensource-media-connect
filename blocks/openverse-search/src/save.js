@@ -37,19 +37,12 @@ export default function Save({ attributes }) {
 
     return (
         <figure {...blockProps}>
-            {mediaType === 'image' ? (
-                <img 
-                    src={selectedMedia.url} 
-                    alt={altText || selectedMedia.title || ''}
-                    className={`size-${imageSize}`}
-                    style={{ maxWidth: `${maxWidth}%` }}
-                />
-            ) : (
-                <audio controls>
-                    <source src={selectedMedia.url} type="audio/mpeg" />
-                    Your browser does not support the audio element.
-                </audio>
-            )}
+            <img 
+                src={selectedMedia.url} 
+                alt={altText || selectedMedia.title || ''}
+                className={`size-${imageSize}`}
+                style={{ maxWidth: `${maxWidth}%` }}
+            />
             
             {renderAttribution()}
         </figure>

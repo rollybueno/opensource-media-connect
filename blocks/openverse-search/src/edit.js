@@ -126,23 +126,6 @@ export default function Edit({ attributes, setAttributes }) {
         openSearchInterface();
     };
 
-    const licenseOptions = [
-        { label: __('All licenses', 'openverse-connect'), value: 'all' },
-        { label: __('CC BY', 'openverse-connect'), value: 'BY' },
-        { label: __('CC BY-SA', 'openverse-connect'), value: 'BY-SA' },
-        { label: __('CC BY-ND', 'openverse-connect'), value: 'BY-ND' },
-        { label: __('CC BY-NC', 'openverse-connect'), value: 'BY-NC' },
-        { label: __('CC BY-NC-SA', 'openverse-connect'), value: 'BY-NC-SA' },
-        { label: __('CC BY-NC-ND', 'openverse-connect'), value: 'BY-NC-ND' },
-        { label: __('CC0', 'openverse-connect'), value: 'CC0' },
-        { label: __('Public Domain Mark', 'openverse-connect'), value: 'PDM' },
-    ];
-
-    const mediaTypeOptions = [
-        { label: __('Images', 'openverse-connect'), value: 'image' },
-        { label: __('Audio', 'openverse-connect'), value: 'audio' },
-    ];
-
     const imageSizeOptions = [
         { label: __('Small', 'openverse-connect'), value: 'small' },
         { label: __('Medium', 'openverse-connect'), value: 'medium' },
@@ -188,19 +171,12 @@ export default function Edit({ attributes, setAttributes }) {
 
         return (
             <div className="openverse-selected-media">
-                {mediaType === 'image' ? (
-                    <img 
-                        src={selectedMedia.thumbnail || selectedMedia.url} 
-                        alt={altText || selectedMedia.title || ''}
-                        className={`size-${imageSize}`}
-                        style={{ maxWidth: `${maxWidth}%` }}
-                    />
-                ) : (
-                    <audio controls>
-                        <source src={selectedMedia.url} type="audio/mpeg" />
-                        {__('Your browser does not support the audio element.', 'openverse-connect')}
-                    </audio>
-                )}
+                <img 
+                    src={selectedMedia.thumbnail || selectedMedia.url} 
+                    alt={altText || selectedMedia.title || ''}
+                    className={`size-${imageSize}`}
+                    style={{ maxWidth: `${maxWidth}%` }}
+                />
                 
                 {showAttribution && renderAttribution(selectedMedia)}
             </div>
@@ -215,27 +191,7 @@ export default function Edit({ attributes, setAttributes }) {
                     label={__('Openverse Media Search', 'openverse-connect')}
                     instructions={__('Search for free and openly licensed media from Openverse', 'openverse-connect')}
                 >
-                    <div className="openverse-search-controls">
-                        <SelectControl
-                            label={__('Media Type', 'openverse-connect')}
-                            hideLabelFromVision={true}
-                            value={mediaType}
-                            options={mediaTypeOptions}
-                            onChange={(value) => setAttributes({ mediaType: value })}
-                            __nextHasNoMarginBottom={ true }
-                            __next40pxDefaultSize={ true }
-                        />
-                        
-                        <SelectControl
-                            label={__('License', 'openverse-connect')}
-                            hideLabelFromVision={true}
-                            value={license}
-                            options={licenseOptions}
-                            onChange={(value) => setAttributes({ license: value })}
-                            __nextHasNoMarginBottom={ true }
-                            __next40pxDefaultSize={ true }
-                        />
-                        
+                    <div className="openverse-search-controls">                        
                         <TextControl
                             label={__('Search Query', 'openverse-connect')}
                             hideLabelFromVision={true}
@@ -298,22 +254,15 @@ export default function Edit({ attributes, setAttributes }) {
                                         }
                                     }}
                                 >
-                                    {mediaType === 'image' ? (
-                                        <img 
-                                            src={item.thumbnail} 
-                                            alt={item.title} 
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                selectMedia(item);
-                                                setIsSearchInterfaceOpen(false);
-                                            }}
-                                        />
-                                    ) : (
-                                        <div className="openverse-audio-item">
-                                            <span className="dashicons dashicons-format-audio"></span>
-                                            <span className="openverse-audio-title">{item.title}</span>
-                                        </div>
-                                    )}
+                                    <img 
+                                        src={item.thumbnail} 
+                                        alt={item.title} 
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            selectMedia(item);
+                                            setIsSearchInterfaceOpen(false);
+                                        }}
+                                    />
                                 </div>
                             ))}
                         </div>

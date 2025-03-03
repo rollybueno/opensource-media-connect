@@ -147,41 +147,6 @@ function Edit({
     });
     openSearchInterface();
   };
-  const licenseOptions = [{
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('All licenses', 'openverse-connect'),
-    value: 'all'
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('CC BY', 'openverse-connect'),
-    value: 'BY'
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('CC BY-SA', 'openverse-connect'),
-    value: 'BY-SA'
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('CC BY-ND', 'openverse-connect'),
-    value: 'BY-ND'
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('CC BY-NC', 'openverse-connect'),
-    value: 'BY-NC'
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('CC BY-NC-SA', 'openverse-connect'),
-    value: 'BY-NC-SA'
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('CC BY-NC-ND', 'openverse-connect'),
-    value: 'BY-NC-ND'
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('CC0', 'openverse-connect'),
-    value: 'CC0'
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Public Domain Mark', 'openverse-connect'),
-    value: 'PDM'
-  }];
-  const mediaTypeOptions = [{
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Images', 'openverse-connect'),
-    value: 'image'
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Audio', 'openverse-connect'),
-    value: 'audio'
-  }];
   const imageSizeOptions = [{
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Small', 'openverse-connect'),
     value: 'small'
@@ -220,19 +185,14 @@ function Edit({
     if (!selectedMedia) return null;
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "openverse-selected-media"
-    }, mediaType === 'image' ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
       src: selectedMedia.thumbnail || selectedMedia.url,
       alt: altText || selectedMedia.title || '',
       className: `size-${imageSize}`,
       style: {
         maxWidth: `${maxWidth}%`
       }
-    }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("audio", {
-      controls: true
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("source", {
-      src: selectedMedia.url,
-      type: "audio/mpeg"
-    }), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Your browser does not support the audio element.', 'openverse-connect')), showAttribution && renderAttribution(selectedMedia));
+    }), showAttribution && renderAttribution(selectedMedia));
   };
   const renderSearchInterface = () => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -243,27 +203,7 @@ function Edit({
       instructions: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Search for free and openly licensed media from Openverse', 'openverse-connect')
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "openverse-search-controls"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Media Type', 'openverse-connect'),
-      hideLabelFromVision: true,
-      value: mediaType,
-      options: mediaTypeOptions,
-      onChange: value => setAttributes({
-        mediaType: value
-      }),
-      __nextHasNoMarginBottom: true,
-      __next40pxDefaultSize: true
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('License', 'openverse-connect'),
-      hideLabelFromVision: true,
-      value: license,
-      options: licenseOptions,
-      onChange: value => setAttributes({
-        license: value
-      }),
-      __nextHasNoMarginBottom: true,
-      __next40pxDefaultSize: true
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Search Query', 'openverse-connect'),
       hideLabelFromVision: true,
       value: query,
@@ -312,7 +252,7 @@ function Edit({
           setIsSearchInterfaceOpen(false);
         }
       }
-    }, mediaType === 'image' ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
       src: item.thumbnail,
       alt: item.title,
       onClick: e => {
@@ -320,13 +260,7 @@ function Edit({
         selectMedia(item);
         setIsSearchInterfaceOpen(false);
       }
-    }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "openverse-audio-item"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-      className: "dashicons dashicons-format-audio"
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-      className: "openverse-audio-title"
-    }, item.title))))), hasMore && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    })))), hasMore && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
       onClick: loadMore,
       disabled: isSearching,
       className: "openverse-load-more button button-secondary"
@@ -397,9 +331,9 @@ __webpack_require__.r(__webpack_exports__);
 
 // Register the block
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)('openverse-connect/search', {
-  title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Openverse Search', 'openverse-connect'),
+  title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Openverse Image', 'openverse-connect'),
   description: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Search and insert media from Openverse', 'openverse-connect'),
-  icon: 'search',
+  icon: 'image',
   category: 'media',
   keywords: [(0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('openverse', 'openverse-connect'), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('image', 'openverse-connect'), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('search', 'openverse-connect')],
   edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -471,19 +405,14 @@ function Save({
   };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("figure", {
     ...blockProps
-  }, mediaType === 'image' ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: selectedMedia.url,
     alt: altText || selectedMedia.title || '',
     className: `size-${imageSize}`,
     style: {
       maxWidth: `${maxWidth}%`
     }
-  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("audio", {
-    controls: true
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("source", {
-    src: selectedMedia.url,
-    type: "audio/mpeg"
-  }), "Your browser does not support the audio element."), renderAttribution());
+  }), renderAttribution());
 }
 
 /***/ }),
