@@ -162,7 +162,7 @@ export default function Edit({ attributes, setAttributes }) {
                         label={__('Alt Text', 'openverse-connect')}
                         value={localAltText}
                         onChange={(value) => setLocalAltText(value)}
-                        onBlur={() => setAttributes({ altText: localAltText })}
+                        onBlur={() => setAttributes({ altText: escapeHTML(localAltText) })}
                         help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')}
                         __nextHasNoMarginBottom={ true }
                     />

@@ -179,7 +179,7 @@ function Edit({
       value: localAltText,
       onChange: value => setLocalAltText(value),
       onBlur: () => setAttributes({
-        altText: localAltText
+        altText: (0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_6__.escapeHTML)(localAltText)
       }),
       help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect'),
       __nextHasNoMarginBottom: true
