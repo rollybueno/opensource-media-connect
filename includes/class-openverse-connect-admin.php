@@ -79,7 +79,7 @@ class Openverse_Connect_Admin {
 	public function render_settings_page() {
 		$client_id               = get_option( 'openverse_connect_client_id' );
 		$client_secret           = get_option( 'openverse_connect_client_secret' );
-		$access_token            = get_option( 'openverse_connect_access_token' ); var_dump( $access_token );
+		$access_token            = get_option( 'openverse_connect_access_token' );
 		$is_connected            = ! empty( $access_token );
 		$has_credentials         = ! empty( $client_id ) && ! empty( $client_secret );
 		$show_manual_credentials = isset( $_GET['error'] ) && 'email_already_registered' === $_GET['error'];
@@ -99,11 +99,6 @@ class Openverse_Connect_Admin {
 					<p class="openverse-connect-status connected">
 						<span class="dashicons dashicons-yes-alt"></span>
 						<?php esc_html_e( 'Connected to Openverse', 'openverse-connect' ); ?>
-					</p>
-					<p>
-						<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=openverse_connect_oauth&disconnect=1' ), 'openverse_connect_disconnect' ) ); ?>" class="button">
-							<?php esc_html_e( 'Disconnect', 'openverse-connect' ); ?>
-						</a>
 					</p>
 				<?php elseif ( $has_credentials ) : ?>
 					<p class="openverse-connect-status not-connected">
@@ -293,7 +288,7 @@ class Openverse_Connect_Admin {
 			'https://api.openverse.engineering/v1/auth_tokens/register/',
 			array(
 				'body' => array(
-					'name'         => sprintf( '%s WordPress Plugin', $site_name ),
+					'name'         => sprintf( '%s Openverse Connect Plugin', $site_name ),
 					'description'  => sprintf(
 						'Openverse integration for WordPress site: %s (%s)',
 						$site_name,
@@ -340,11 +335,11 @@ class Openverse_Connect_Admin {
 	 *
 	 * @return string|WP_Error Access token or error.
 	 */
-	private function get_client_credentials_token() {
+	public function get_client_credentials_token() {
 		$get_transient = get_transient( 'openverse_connect_access_token' );
 
 		if ( false !== $get_transient ) {
-			return get_transient;
+			return $get_transient;
 		}
 
 		$client_id     = get_option( 'openverse_connect_client_id' );
@@ -398,93 +393,6 @@ class Openverse_Connect_Admin {
 			),
 			'https://api.openverse.engineering/v1/auth/oauth/authorize'
 		);
-	}
-
-	/**
-	 * Handle the OAuth redirect from Openverse.
-	 */
-	public function handle_oauth_redirect() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'openverse-connect' ) );
-		}
-
-		// Handle disconnect request.
-		if ( isset( $_GET['disconnect'] ) && check_admin_referer( 'openverse_connect_disconnect' ) ) {
-			delete_option( 'openverse_connect_access_token' );
-			wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&disconnected=1' ) );
-			exit;
-		}
-
-		// Handle OAuth response.
-		if ( ! isset( $_GET['code'] ) || ! isset( $_GET['state'] ) ) {
-			wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=invalid_response' ) );
-			exit;
-		}
-
-		$state = sanitize_text_field( wp_unslash( $_GET['state'] ) );
-		if ( ! wp_verify_nonce( $state, 'openverse_connect_oauth' ) ) {
-			wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=invalid_state' ) );
-			exit;
-		}
-
-		$code  = sanitize_text_field( wp_unslash( $_GET['code'] ) );
-		$token = $this->get_access_token( $code );
-		if ( is_wp_error( $token ) ) {
-			wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&error=token_error' ) );
-			exit;
-		}
-
-		update_option( 'openverse_connect_access_token', $token );
-		wp_safe_redirect( admin_url( 'options-general.php?page=openverse-connect&connected=1' ) );
-		exit;
-	}
-
-	/**
-	 * Get access token from authorization code.
-	 *
-	 * @param string $code Authorization code.
-	 * @return string|WP_Error Access token or error.
-	 */
-	public function get_access_token( $code ) {
-		$get_transient = get_transient( 'openverse_connect_access_token' );
-
-		if ( false !== $get_transient ) {
-			return get_transient;
-		}
-
-		$client_id     = get_option( 'openverse_connect_client_id' );
-		$client_secret = get_option( 'openverse_connect_client_secret' );
-		$redirect_uri  = admin_url( 'admin-post.php?action=openverse_connect_oauth' );
-
-		$response = wp_remote_post(
-			'https://api.openverse.org/v1/auth_tokens/token',
-			array(
-				'body' => array(
-					'grant_type'    => 'authorization_code',
-					'code'          => $code,
-					'client_id'     => $client_id,
-					'client_secret' => $client_secret,
-					'redirect_uri'  => $redirect_uri,
-				),
-			)
-		);
-
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-
-		$body = json_decode( wp_remote_retrieve_body( $response ), true );
-		if ( empty( $body['access_token'] ) ) {
-			return new WP_Error( 'invalid_token', __( 'Invalid response from Openverse', 'openverse-connect' ) );
-		}
-
-		/**
-		 * Save the access token to the transient.
-		 * Use the expires_in value to set the transient expiration.
-		 */
-		set_transient( 'openverse_connect_access_token', $body['access_token'], $body['expires_in'] );
-
-		return $body['access_token'];
 	}
 
 	/**
