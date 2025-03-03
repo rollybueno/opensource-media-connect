@@ -397,8 +397,6 @@ export default function Edit({ attributes, setAttributes }) {
                             label={__('Replace Media', 'openverse-connect')}
                             onClick={resetSelection}
                         />
-                        <MediaSettingsDropdown />
-                        {mediaType === 'image' && <ImageSizeDropdown />}
                     </ToolbarGroup>
                 </BlockControls>
             )}
