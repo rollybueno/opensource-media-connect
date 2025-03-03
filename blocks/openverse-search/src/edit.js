@@ -354,10 +354,32 @@ export default function Edit({ attributes, setAttributes }) {
                                 <div 
                                     key={item.id} 
                                     className="openverse-result-item"
-                                    onClick={() => selectMedia(item)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        selectMedia(item);
+                                        setIsSearchInterfaceOpen(false);
+                                    }}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            selectMedia(item);
+                                            setIsSearchInterfaceOpen(false);
+                                        }
+                                    }}
                                 >
                                     {mediaType === 'image' ? (
-                                        <img src={item.thumbnail} alt={item.title} />
+                                        <img 
+                                            src={item.thumbnail} 
+                                            alt={item.title} 
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                selectMedia(item);
+                                                setIsSearchInterfaceOpen(false);
+                                            }}
+                                        />
                                     ) : (
                                         <div className="openverse-audio-item">
                                             <span className="dashicons dashicons-format-audio"></span>

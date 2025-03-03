@@ -376,10 +376,29 @@ function Edit({
     }, searchResults.map(item => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       key: item.id,
       className: "openverse-result-item",
-      onClick: () => selectMedia(item)
+      onClick: e => {
+        e.stopPropagation();
+        selectMedia(item);
+        setIsSearchInterfaceOpen(false);
+      },
+      role: "button",
+      tabIndex: 0,
+      onKeyDown: e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          e.stopPropagation();
+          selectMedia(item);
+          setIsSearchInterfaceOpen(false);
+        }
+      }
     }, mediaType === 'image' ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
       src: item.thumbnail,
-      alt: item.title
+      alt: item.title,
+      onClick: e => {
+        e.stopPropagation();
+        selectMedia(item);
+        setIsSearchInterfaceOpen(false);
+      }
     }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "openverse-audio-item"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
