@@ -168,6 +168,7 @@ export default function Edit({ attributes, setAttributes }) {
                 onChange={(value) => {
                     setAttributes({ showAttribution: value });
                 }}
+                __nextHasNoMarginBottom={ true }
             />
             
             {mediaType === 'image' && (
@@ -176,6 +177,7 @@ export default function Edit({ attributes, setAttributes }) {
                     value={altText}
                     onChange={(value) => setAttributes({ altText: sanitizeAltText(value) })}
                     help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')}
+                    __nextHasNoMarginBottom={ true }
                 />
             )}
         </>
@@ -238,6 +240,7 @@ export default function Edit({ attributes, setAttributes }) {
                         value={imageSize}
                         options={imageSizeOptions}
                         onChange={(value) => setAttributes({ imageSize: value })}
+                        __nextHasNoMarginBottom={ true }
                     />
                     <RangeControl
                         label={__('Maximum Width (%)', 'openverse-connect')}
@@ -245,6 +248,7 @@ export default function Edit({ attributes, setAttributes }) {
                         onChange={(value) => setAttributes({ maxWidth: value })}
                         min={10}
                         max={100}
+                        __nextHasNoMarginBottom={ true }
                     />
                 </div>
             )}
@@ -286,28 +290,37 @@ export default function Edit({ attributes, setAttributes }) {
                     <div className="openverse-search-controls">
                         <SelectControl
                             label={__('Media Type', 'openverse-connect')}
+                            hideLabelFromVision={true}
                             value={mediaType}
                             options={mediaTypeOptions}
                             onChange={(value) => setAttributes({ mediaType: value })}
+                            __nextHasNoMarginBottom={ true }
+                            __next40pxDefaultSize={ true }
                         />
                         
                         <SelectControl
                             label={__('License', 'openverse-connect')}
+                            hideLabelFromVision={true}
                             value={license}
                             options={licenseOptions}
                             onChange={(value) => setAttributes({ license: value })}
+                            __nextHasNoMarginBottom={ true }
+                            __next40pxDefaultSize={ true }
                         />
                         
                         <TextControl
                             label={__('Search Query', 'openverse-connect')}
+                            hideLabelFromVision={true}
                             value={query}
                             onChange={(value) => setAttributes({ query: value })}
                             placeholder={__('Enter search terms...', 'openverse-connect')}
+                            __nextHasNoMarginBottom={ true }
+                            __next40pxDefaultSize={ true }
                         />
                         
-                        <div className="openverse-search-buttons">
-                            <Button 
-                                isPrimary
+                        <div className="openverse-search-buttons" style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+                            <Button
+                                variant="primary"
                                 onClick={() => performSearch(true)}
                                 disabled={!query.trim() || isSearching}
                             >
@@ -315,8 +328,8 @@ export default function Edit({ attributes, setAttributes }) {
                             </Button>
                             
                             {previousMediaRef.current && (
-                                <Button 
-                                    isSecondary
+                                <Button
+                                    variant="secondary"
                                     onClick={cancelSearch}
                                     className="openverse-cancel-search"
                                 >
@@ -381,7 +394,7 @@ export default function Edit({ attributes, setAttributes }) {
                     <ToolbarGroup>
                         <ToolbarButton
                             icon={replace}
-                            label={__('Choose Different Media', 'openverse-connect')}
+                            label={__('Replace Media', 'openverse-connect')}
                             onClick={resetSelection}
                         />
                         <MediaSettingsDropdown />
@@ -400,6 +413,7 @@ export default function Edit({ attributes, setAttributes }) {
                                 value={imageSize}
                                 options={imageSizeOptions}
                                 onChange={(value) => setAttributes({ imageSize: value })}
+                                __nextHasNoMarginBottom={ true }
                             />
                             
                             <RangeControl
@@ -408,6 +422,7 @@ export default function Edit({ attributes, setAttributes }) {
                                 onChange={(value) => setAttributes({ maxWidth: value })}
                                 min={10}
                                 max={100}
+                                __nextHasNoMarginBottom={ true }
                             />
                         </>
                     )}

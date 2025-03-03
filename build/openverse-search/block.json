@@ -8,7 +8,7 @@
   "textdomain": "openverse-connect",
   "supports": {
     "html": false,
-    "align": ["wide", "full"]
+    "align": ["wide", "full", "center", "left", "right"]
   },
   "attributes": {
     "query": {
