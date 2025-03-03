@@ -10,12 +10,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class to handle all admin functionality.
+ * Openverse Connect Admin Class.
+ *
+ * Handles all administrative functionality for the Openverse Connect plugin.
+ * This includes settings pages, API key management, and admin-specific features.
+ *
+ * @since 1.0.0
  */
 class Openverse_Connect_Admin {
 
 	/**
 	 * Constructor.
+	 *
+	 * Sets up the admin hooks and initializes the admin functionality.
+	 * Registers menu items, settings, and admin notices.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
@@ -27,6 +37,11 @@ class Openverse_Connect_Admin {
 
 	/**
 	 * Add menu item to WordPress admin.
+	 *
+	 * Creates the settings page menu item under Settings.
+	 *
+	 * @since 1.0.0
+	 * @return void
 	 */
 	public function add_admin_menu() {
 		add_options_page(
@@ -40,6 +55,12 @@ class Openverse_Connect_Admin {
 
 	/**
 	 * Register plugin settings.
+	 *
+	 * Registers the settings fields and sections for the plugin.
+	 * Includes client ID, client secret, and access token settings.
+	 *
+	 * @since 1.0.0
+	 * @return void
 	 */
 	public function register_settings() {
 		register_setting(
@@ -75,6 +96,12 @@ class Openverse_Connect_Admin {
 
 	/**
 	 * Render the settings page.
+	 *
+	 * Displays the main settings page for the plugin.
+	 * Shows connection status, registration form, and credentials.
+	 *
+	 * @since 1.0.0
+	 * @return void
 	 */
 	public function render_settings_page() {
 		$client_id               = get_option( 'openverse_connect_client_id' );
@@ -239,6 +266,12 @@ class Openverse_Connect_Admin {
 
 	/**
 	 * Handle application registration with Openverse.
+	 *
+	 * Processes the application registration form submission.
+	 * Creates a new application registration or validates existing credentials.
+	 *
+	 * @since 1.0.0
+	 * @return void
 	 */
 	public function handle_app_registration() {
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -333,6 +366,10 @@ class Openverse_Connect_Admin {
 	/**
 	 * Get access token using client credentials grant.
 	 *
+	 * Retrieves or generates a new access token for API authentication.
+	 * Uses client credentials flow to obtain the token.
+	 *
+	 * @since 1.0.0
 	 * @return string|WP_Error Access token or error.
 	 */
 	public function get_client_credentials_token() {
@@ -377,6 +414,10 @@ class Openverse_Connect_Admin {
 	/**
 	 * Get the OAuth URL for connecting to Openverse.
 	 *
+	 * Generates the OAuth authorization URL with proper parameters.
+	 * Includes client ID, state, and redirect URI.
+	 *
+	 * @since 1.0.0
 	 * @return string The OAuth URL.
 	 */
 	private function get_oauth_url() {
@@ -397,6 +438,12 @@ class Openverse_Connect_Admin {
 
 	/**
 	 * Display OAuth-related admin notices.
+	 *
+	 * Shows success and error messages related to OAuth operations.
+	 * Handles various error cases and success states.
+	 *
+	 * @since 1.0.0
+	 * @return void
 	 */
 	public function display_oauth_notices() {
 		$screen = get_current_screen();

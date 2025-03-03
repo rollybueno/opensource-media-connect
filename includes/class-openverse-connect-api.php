@@ -10,12 +10,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class to handle all API functionality.
+ * Openverse Connect API Class.
+ *
+ * Handles all API interactions with the Openverse service.
+ * This includes authentication, search requests, and media retrieval.
+ *
+ * @since 1.0.0
  */
 class Openverse_Connect_API extends Openverse_Connect_Admin {
 
 	/**
 	 * Constructor.
+	 *
+	 * Initializes the API class and sets up necessary hooks.
+	 * Registers REST API endpoints for the plugin.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
@@ -23,6 +33,12 @@ class Openverse_Connect_API extends Openverse_Connect_Admin {
 
 	/**
 	 * Register REST API routes.
+	 *
+	 * Registers the custom REST API endpoints for the plugin.
+	 * Sets up the search endpoint with proper parameters and callbacks.
+	 *
+	 * @since 1.0.0
+	 * @return void
 	 */
 	public function register_rest_routes() {
 		register_rest_route(
@@ -57,6 +73,10 @@ class Openverse_Connect_API extends Openverse_Connect_Admin {
 	/**
 	 * Check if user has permission to use the API.
 	 *
+	 * Verifies that the current user has the necessary permissions
+	 * to access the Openverse API endpoints.
+	 *
+	 * @since 1.0.0
 	 * @return bool Whether the user has permission.
 	 */
 	public function check_permissions() {
@@ -66,6 +86,10 @@ class Openverse_Connect_API extends Openverse_Connect_Admin {
 	/**
 	 * Handle search request to Openverse API.
 	 *
+	 * Processes search requests and returns media results.
+	 * Handles pagination, media type filtering, and license filtering.
+	 *
+	 * @since 1.0.0
 	 * @param WP_REST_Request $request The request object.
 	 * @return WP_REST_Response|WP_Error The response or error.
 	 */
