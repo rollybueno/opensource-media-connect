@@ -163,24 +163,28 @@ function Edit({
       className: "wp-element-caption openverse-attribution"
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Creator:', 'openverse-connect'), " ", media.creator || (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unknown', 'openverse-connect'), " |", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('License:', 'openverse-connect'), " ", media.license);
   };
-  const MediaSettingsPanel = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Show Attribution', 'openverse-connect'),
-    checked: showAttribution,
-    onChange: value => {
-      setAttributes({
-        showAttribution: value
-      });
-    },
-    __nextHasNoMarginBottom: true
-  }), mediaType === 'image' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alt Text', 'openverse-connect'),
-    value: altText,
-    onChange: value => setAttributes({
-      altText: sanitizeAltText(value)
-    }),
-    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect'),
-    __nextHasNoMarginBottom: true
-  }));
+  const MediaSettingsPanel = () => {
+    const [localAltText, setLocalAltText] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(altText || '');
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Show Attribution', 'openverse-connect'),
+      checked: showAttribution,
+      onChange: value => {
+        setAttributes({
+          showAttribution: value
+        });
+      },
+      __nextHasNoMarginBottom: true
+    }), mediaType === 'image' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alt Text', 'openverse-connect'),
+      value: localAltText,
+      onChange: value => setLocalAltText(value),
+      onBlur: () => setAttributes({
+        altText: localAltText
+      }),
+      help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect'),
+      __nextHasNoMarginBottom: true
+    }));
+  };
   const renderSelectedMedia = () => {
     if (!selectedMedia) return null;
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {

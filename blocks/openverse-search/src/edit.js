@@ -143,28 +143,33 @@ export default function Edit({ attributes, setAttributes }) {
         );
     };
 
-    const MediaSettingsPanel = () => (
-        <>
-            <ToggleControl
-                label={__('Show Attribution', 'openverse-connect')}
-                checked={showAttribution}
-                onChange={(value) => {
-                    setAttributes({ showAttribution: value });
-                }}
-                __nextHasNoMarginBottom={ true }
-            />
-            
-            {mediaType === 'image' && (
-                <TextControl
-                    label={__('Alt Text', 'openverse-connect')}
-                    value={altText}
-                    onChange={(value) => setAttributes({ altText: sanitizeAltText(value) })}
-                    help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')}
+    const MediaSettingsPanel = () => {
+        const [localAltText, setLocalAltText] = useState(altText || '');
+
+        return (
+            <>
+                <ToggleControl
+                    label={__('Show Attribution', 'openverse-connect')}
+                    checked={showAttribution}
+                    onChange={(value) => {
+                        setAttributes({ showAttribution: value });
+                    }}
                     __nextHasNoMarginBottom={ true }
                 />
-            )}
-        </>
-    );
+                
+                {mediaType === 'image' && (
+                    <TextControl
+                        label={__('Alt Text', 'openverse-connect')}
+                        value={localAltText}
+                        onChange={(value) => setLocalAltText(value)}
+                        onBlur={() => setAttributes({ altText: localAltText })}
+                        help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')}
+                        __nextHasNoMarginBottom={ true }
+                    />
+                )}
+            </>
+        );
+    };
 
     const renderSelectedMedia = () => {
         if (!selectedMedia) return null;
