@@ -79,7 +79,7 @@ class Openverse_Connect_Admin {
 	public function render_settings_page() {
 		$client_id               = get_option( 'openverse_connect_client_id' );
 		$client_secret           = get_option( 'openverse_connect_client_secret' );
-		$access_token            = get_option( 'openverse_connect_access_token' );
+		$access_token            = get_option( 'openverse_connect_access_token' ); var_dump( $access_token );
 		$is_connected            = ! empty( $access_token );
 		$has_credentials         = ! empty( $client_id ) && ! empty( $client_secret );
 		$show_manual_credentials = isset( $_GET['error'] ) && 'email_already_registered' === $_GET['error'];
@@ -109,11 +109,6 @@ class Openverse_Connect_Admin {
 					<p class="openverse-connect-status not-connected">
 						<span class="dashicons dashicons-warning"></span>
 						<?php esc_html_e( 'Not connected to Openverse', 'openverse-connect' ); ?>
-					</p>
-					<p>
-						<a href="<?php echo esc_url( $this->get_oauth_url() ); ?>" class="button button-primary">
-							<?php esc_html_e( 'Connect to Openverse', 'openverse-connect' ); ?>
-						</a>
 					</p>
 				<?php else : ?>
 					<p class="openverse-connect-status not-registered">
@@ -346,6 +341,12 @@ class Openverse_Connect_Admin {
 	 * @return string|WP_Error Access token or error.
 	 */
 	private function get_client_credentials_token() {
+		$get_transient = get_transient( 'openverse_connect_access_token' );
+
+		if ( false !== $get_transient ) {
+			return get_transient;
+		}
+
 		$client_id     = get_option( 'openverse_connect_client_id' );
 		$client_secret = get_option( 'openverse_connect_client_secret' );
 
@@ -368,6 +369,12 @@ class Openverse_Connect_Admin {
 		if ( empty( $body['access_token'] ) ) {
 			return new WP_Error( 'invalid_token', __( 'Invalid response from Openverse', 'openverse-connect' ) );
 		}
+
+		/**
+		 * Save the access token to the transient.
+		 * Use the expires_in value to set the transient expiration.
+		 */
+		set_transient( 'openverse_connect_access_token', $body['access_token'], $body['expires_in'] );
 
 		return $body['access_token'];
 	}
@@ -438,13 +445,19 @@ class Openverse_Connect_Admin {
 	 * @param string $code Authorization code.
 	 * @return string|WP_Error Access token or error.
 	 */
-	private function get_access_token( $code ) {
+	public function get_access_token( $code ) {
+		$get_transient = get_transient( 'openverse_connect_access_token' );
+
+		if ( false !== $get_transient ) {
+			return get_transient;
+		}
+
 		$client_id     = get_option( 'openverse_connect_client_id' );
 		$client_secret = get_option( 'openverse_connect_client_secret' );
 		$redirect_uri  = admin_url( 'admin-post.php?action=openverse_connect_oauth' );
 
 		$response = wp_remote_post(
-			'https://api.openverse.engineering/v1/auth/oauth/token',
+			'https://api.openverse.org/v1/auth_tokens/token',
 			array(
 				'body' => array(
 					'grant_type'    => 'authorization_code',
@@ -464,6 +477,12 @@ class Openverse_Connect_Admin {
 		if ( empty( $body['access_token'] ) ) {
 			return new WP_Error( 'invalid_token', __( 'Invalid response from Openverse', 'openverse-connect' ) );
 		}
+
+		/**
+		 * Save the access token to the transient.
+		 * Use the expires_in value to set the transient expiration.
+		 */
+		set_transient( 'openverse_connect_access_token', $body['access_token'], $body['expires_in'] );
 
 		return $body['access_token'];
 	}

@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class to handle all API functionality.
  */
-class Openverse_Connect_API {
+class Openverse_Connect_API extends Openverse_Connect_Admin {
 
 	/**
 	 * Constructor.
@@ -75,13 +75,10 @@ class Openverse_Connect_API {
 		$media_type = $request->get_param( 'media_type' );
 		$license    = $request->get_param( 'license' );
 
-		$access_token = get_option( 'openverse_connect_access_token' );
-		if ( empty( $access_token ) ) {
-			return new WP_Error(
-				'not_connected',
-				__( 'Not connected to Openverse. Please connect in the plugin settings.', 'openverse-connect' ),
-				array( 'status' => 403 )
-			);
+		$access_token = get_transient( 'openverse_connect_access_token' );
+		if ( false === $access_token ) {
+			// Get access token from Openverse Connect admin class.
+			$access_token = $this->get_client_credentials_token();
 		}
 
 		$api_url = 'https://api.openverse.org/v1/' . $media_type . 's/';
@@ -140,9 +137,6 @@ class Openverse_Connect_API {
 			// Handle different media types
 			if ( 'image' === $media_type ) {
 				$result['thumbnail'] = isset( $item['thumbnail'] ) ? $item['thumbnail'] : $item['url'];
-			} elseif ( 'audio' === $media_type ) {
-				$result['thumbnail'] = ''; // Audio doesn't have thumbnails
-				$result['url'] = isset( $item['audio_url'] ) ? $item['audio_url'] : '';
 			}
 
 			$results[] = $result;
