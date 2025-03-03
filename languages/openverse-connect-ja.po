@@ -1,0 +1,112 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Openverse Connect 1.0.0\n"
+"POT-Creation-Date: 2024-03-20 12:00+0000\n"
+"PO-Revision-Date: 2024-03-20 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.4.2\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+
+msgid "Openverse Connect Settings"
+msgstr "Openverse Connect 設定"
+
+msgid "Openverse Connect"
+msgstr "Openverse Connect"
+
+msgid "You need to connect to Openverse to use this plugin."
+msgstr "このプラグインを使用するには、Openverseに接続する必要があります。"
+
+msgid "Connection Status"
+msgstr "接続状態"
+
+msgid "Connected to Openverse"
+msgstr "Openverseに接続済み"
+
+msgid "Not connected to Openverse"
+msgstr "Openverseに未接続"
+
+msgid "Register your WordPress site with Openverse"
+msgstr "WordPressサイトをOpenverseに登録"
+
+msgid "This will create a new application registration with Openverse automatically. You can only have one application registration per email address."
+msgstr "Openverseに新しいアプリケーション登録が自動的に作成されます。メールアドレスごとに1つのアプリケーション登録のみ可能です。"
+
+msgid "Your email address"
+msgstr "メールアドレス"
+
+msgid "An application is already registered with this email. If you already have credentials, you can enter them below:"
+msgstr "このメールアドレスは既に登録されています。既存の認証情報がある場合は、以下に入力してください："
+
+msgid "Client ID"
+msgstr "クライアントID"
+
+msgid "Enter your existing Client ID"
+msgstr "既存のクライアントIDを入力"
+
+msgid "Client Secret"
+msgstr "クライアントシークレット"
+
+msgid "Enter your existing Client Secret"
+msgstr "既存のクライアントシークレットを入力"
+
+msgid "Save Credentials"
+msgstr "認証情報を保存"
+
+msgid "Register with Openverse"
+msgstr "Openverseに登録"
+
+msgid "Application Credentials"
+msgstr "アプリケーション認証情報"
+
+msgid "Show"
+msgstr "表示"
+
+msgid "Successfully registered with Openverse! You can now connect your site."
+msgstr "Openverseへの登録が完了しました！サイトを接続できます。"
+
+msgid "Successfully connected to Openverse!"
+msgstr "Openverseへの接続が完了しました！"
+
+msgid "Successfully disconnected from Openverse."
+msgstr "Openverseから切断しました。"
+
+msgid "You do not have sufficient permissions to access this page."
+msgstr "このページにアクセスする権限がありません。"
+
+msgid "Email address is required."
+msgstr "メールアドレスは必須です。"
+
+msgid "Please enter a valid email address."
+msgstr "有効なメールアドレスを入力してください。"
+
+msgid "Failed to register with Openverse. Please try again."
+msgstr "Openverseへの登録に失敗しました。もう一度お試しください。"
+
+msgid "Invalid response from Openverse registration."
+msgstr "Openverse登録からの無効な応答。"
+
+msgid "Invalid response from Openverse."
+msgstr "Openverseからの無効な応答。"
+
+msgid "Invalid state parameter."
+msgstr "無効な状態パラメータ。"
+
+msgid "Error obtaining access token."
+msgstr "アクセストークンの取得中にエラーが発生しました。"
+
+msgid "An application is already registered with this email. You can enter your existing credentials below."
+msgstr "このメールアドレスは既に登録されています。既存の認証情報を以下に入力できます。"
+
+msgid "The provided credentials are invalid. Please check and try again."
+msgstr "提供された認証情報が無効です。確認して再度お試しください。" 
