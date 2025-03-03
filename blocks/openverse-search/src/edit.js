@@ -183,78 +183,6 @@ export default function Edit({ attributes, setAttributes }) {
         </>
     );
 
-    const MediaSettingsDropdown = () => (
-        <Dropdown
-            className="openverse-media-settings-dropdown"
-            contentClassName="openverse-media-settings-dropdown-content"
-            popoverProps={{
-                placement: 'bottom-start',
-                offset: 20,
-                shift: true,
-                flip: true,
-                resize: true,
-                headerTitle: __('Media Settings', 'openverse-connect'),
-            }}
-            renderToggle={({ isOpen, onToggle }) => (
-                <ToolbarButton
-                    icon={cog}
-                    label={__('Media Settings', 'openverse-connect')}
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    isPressed={isOpen}
-                />
-            )}
-            renderContent={() => (
-                <div className="openverse-media-settings-panel" style={{ minWidth: '300px', maxWidth: '500px', height: 'auto', padding: '20px', margin: 'auto' }}>
-                    <MediaSettingsPanel />
-                </div>
-            )}
-        />
-    );
-
-    const ImageSizeDropdown = () => (
-        <Dropdown
-            className="openverse-image-size-dropdown"
-            contentClassName="openverse-image-size-dropdown-content"
-            popoverProps={{
-                placement: 'bottom-start',
-                offset: 20,
-                shift: true,
-                flip: true,
-                resize: true,
-                headerTitle: __('Image Size', 'openverse-connect'),
-            }}
-            renderToggle={({ isOpen, onToggle }) => (
-                <ToolbarButton
-                    icon="editor-expand"
-                    label={__('Image Size', 'openverse-connect')}
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    isPressed={isOpen}
-                />
-            )}
-            renderContent={() => (
-                <div className="openverse-image-size-panel" style={{ padding: '12px', minWidth: '200px' }}>
-                    <SelectControl
-                        label={__('Image Size', 'openverse-connect')}
-                        value={imageSize}
-                        options={imageSizeOptions}
-                        onChange={(value) => setAttributes({ imageSize: value })}
-                        __nextHasNoMarginBottom={ true }
-                    />
-                    <RangeControl
-                        label={__('Maximum Width (%)', 'openverse-connect')}
-                        value={maxWidth}
-                        onChange={(value) => setAttributes({ maxWidth: value })}
-                        min={10}
-                        max={100}
-                        __nextHasNoMarginBottom={ true }
-                    />
-                </div>
-            )}
-        />
-    );
-
     const renderSelectedMedia = () => {
         if (!selectedMedia) return null;
 
@@ -403,10 +331,6 @@ export default function Edit({ attributes, setAttributes }) {
                 )}
             </div>
         );
-    };
-
-    const stopPropagation = (event) => {
-        event.stopPropagation();
     };
 
     return (
