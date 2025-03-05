@@ -1,15 +1,17 @@
 <?php
 /**
- * Plugin Name: Openverse Connect
- * Description: OpenVerse Connect seamlessly integrates Openverse with your WordPress site, enabling you to effortlessly search, browse, and embed high-quality, copyright-free media content directly into your posts and pages. 
+ * Plugin Name: Opensource Media
+ * Plugin URI: https://wordpress.org/plugins/opensource-media/
+ * Description: A WordPress plugin to search and embed media from Openverse.
  * Version: 1.0.0
- * Author: Rolly Bueno
- * Author URI: https://rollybueno.com
- * Text Domain: openverse-connect
+ * Author: Your Name
+ * Author URI: https://yourwebsite.com
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: opensource-media
  * Domain Path: /languages
- * License: GPL-2.0+
  *
- * @package Openverse_Connect
+ * @package Opensource_Media
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -122,3 +124,13 @@ function openverse_connect_register_block() {
 	}
 }
 add_action( 'init', 'openverse_connect_register_block' );
+
+// Load text domain for translations.
+function opensource_media_load_textdomain() {
+	load_plugin_textdomain(
+		'opensource-media',
+		false,
+		dirname( plugin_basename( __FILE__ ) ) . '/languages'
+	);
+}
+add_action( 'plugins_loaded', 'opensource_media_load_textdomain' );
