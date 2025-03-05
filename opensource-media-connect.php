@@ -24,7 +24,7 @@ define( 'OPENSOURCE_MEDIA_CONNECT_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'OPENSOURCE_MEDIA_CONNECT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 // Include the main plugin class.
-require_once OPENSOURCE_MEDIA_CONNECT_PLUGIN_DIR . 'includes/class-openverse-connect.php';
+require_once OPENSOURCE_MEDIA_CONNECT_PLUGIN_DIR . 'includes/class-opensource-media-connect.php';
 
 /**
  * Main function to initialize the plugin.
@@ -33,14 +33,14 @@ require_once OPENSOURCE_MEDIA_CONNECT_PLUGIN_DIR . 'includes/class-openverse-con
  * It creates and returns a singleton instance of the main plugin class.
  *
  * @since 1.0.0
- * @return Openverse_Connect The main plugin class instance.
+ * @return Opensource_Media_Connect The main plugin class instance.
  */
-function openverse_connect_init() {
-	return Openverse_Connect::get_instance();
+function opensource_media_connect_init() {
+	return Opensource_Media_Connect::get_instance();
 }
 
 // Initialize the plugin.
-$GLOBALS['openverse_connect'] = openverse_connect_init();
+$GLOBALS['opensource_media_connect'] = opensource_media_connect_init();
 
 /**
  * Activation hook callback.
@@ -51,12 +51,12 @@ $GLOBALS['openverse_connect'] = openverse_connect_init();
  * @since 1.0.0
  * @return void
  */
-function openverse_connect_activate() {
+function opensource_media_connect_activate() {
 	// Add default options.
-	add_option( 'openverse_connect_client_id', '' );
-	add_option( 'openverse_connect_client_secret', '' );
+	add_option( 'opensource_media_connect_client_id', '' );
+	add_option( 'opensource_media_connect_client_secret', '' );
 }
-register_activation_hook( __FILE__, 'openverse_connect_activate' );
+register_activation_hook( __FILE__, 'opensource_media_connect_activate' );
 
 /**
  * Clean up plugin data when the plugin is deleted.
@@ -67,14 +67,14 @@ register_activation_hook( __FILE__, 'openverse_connect_activate' );
  * @since 1.0.0
  * @return void
  */
-function openverse_connect_uninstall() {
-	delete_option( 'openverse_connect_client_id' );
-	delete_option( 'openverse_connect_client_secret' );
-	delete_option( 'openverse_connect_access_token' );
+function opensource_media_connect_uninstall() {
+	delete_option( 'opensource_media_connect_client_id' );
+	delete_option( 'opensource_media_connect_client_secret' );
+	delete_option( 'opensource_media_connect_access_token' );
 }
 
 // Register uninstall hook.
-register_uninstall_hook( __FILE__, 'openverse_connect_uninstall' );
+register_uninstall_hook( __FILE__, 'opensource_media_connect_uninstall' );
 
 /**
  * Register block scripts and styles.
@@ -85,7 +85,7 @@ register_uninstall_hook( __FILE__, 'openverse_connect_uninstall' );
  * @since 1.0.0
  * @return void
  */
-function openverse_connect_register_block() {
+function opensource_media_connect_register_block() {
 	// Check if build directory exists.
 	$build_dir = OPENSOURCE_MEDIA_CONNECT_PLUGIN_DIR . 'build/openverse-search';
 
@@ -100,7 +100,7 @@ function openverse_connect_register_block() {
 		} else {
 			// Manual registration as last resort.
 			wp_register_script(
-				'openverse-connect-block',
+				'opensource-media-connect-block',
 				OPENSOURCE_MEDIA_CONNECT_PLUGIN_URL . 'blocks/openverse-search/src/index.js',
 				array(
 					'wp-blocks',
@@ -115,15 +115,15 @@ function openverse_connect_register_block() {
 			);
 
 			register_block_type(
-				'openverse-connect/search',
+				'opensource-media-connect/search',
 				array(
-					'editor_script' => 'openverse-connect-block',
+					'editor_script' => 'opensource-media-connect-block',
 				)
 			);
 		}
 	}
 }
-add_action( 'init', 'openverse_connect_register_block' );
+add_action( 'init', 'opensource_media_connect_register_block' );
 
 // Load text domain for translations.
 function opensource_media_load_textdomain() {

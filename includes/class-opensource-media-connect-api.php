@@ -1,8 +1,8 @@
 <?php
 /**
- * Handles the API functionality of the Openverse Connect plugin.
+ * Handles the API functionality of the Opensource Media Connect plugin.
  *
- * @package Openverse_Connect
+ * @package Opensource_Media_Connect
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,14 +10,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Openverse Connect API Class.
+ * Opensource Media Connect API Class.
  *
  * Handles all API interactions with the Openverse service.
  * This includes authentication, search requests, and media retrieval.
  *
  * @since 1.0.0
  */
-class Openverse_Connect_API extends Opensource_Media_Connect_Admin {
+class Opensource_Media_Connect_API extends Opensource_Media_Connect_Admin {
 
 	/**
 	 * Constructor.
@@ -42,7 +42,7 @@ class Openverse_Connect_API extends Opensource_Media_Connect_Admin {
 	 */
 	public function register_rest_routes() {
 		register_rest_route(
-			'openverse-connect/v1',
+			'opensource-media-connect/v1',
 			'/search',
 			array(
 				'methods'             => 'GET',
@@ -99,9 +99,9 @@ class Openverse_Connect_API extends Opensource_Media_Connect_Admin {
 		$media_type = $request->get_param( 'media_type' );
 		$license    = $request->get_param( 'license' );
 
-		$access_token = get_transient( 'openverse_connect_access_token' );
+		$access_token = get_transient( 'opensource_media_connect_access_token' );
 		if ( false === $access_token ) {
-			// Get access token from Openverse Connect admin class.
+			// Get access token from Opensource Media Connect admin class.
 			$access_token = $this->get_client_credentials_token();
 		}
 
@@ -115,7 +115,7 @@ class Openverse_Connect_API extends Opensource_Media_Connect_Admin {
 			$api_url
 		);
 
-		// Add license filter if not "all"
+		// Add license filter if not "all".
 		if ( 'all' !== $license ) {
 			$api_url = add_query_arg( array( 'license' => $license ), $api_url );
 		}
@@ -141,12 +141,12 @@ class Openverse_Connect_API extends Opensource_Media_Connect_Admin {
 		if ( ! isset( $body['results'] ) ) {
 			return new WP_Error(
 				'invalid_response',
-				__( 'Invalid response from Openverse API', 'openverse-connect' ),
+				__( 'Invalid response from Openverse API', 'opensource-media-connect' ),
 				array( 'status' => 500 )
 			);
 		}
 
-		// Process results to standardize format
+		// Process results to standardize format.
 		$results = array();
 		foreach ( $body['results'] as $item ) {
 			$result = array(
@@ -158,7 +158,7 @@ class Openverse_Connect_API extends Opensource_Media_Connect_Admin {
 				'thumbnail' => '',
 			);
 
-			// Handle different media types
+			// Handle different media types.
 			if ( 'image' === $media_type ) {
 				$result['thumbnail'] = isset( $item['thumbnail'] ) ? $item['thumbnail'] : $item['url'];
 			}
@@ -175,3 +175,4 @@ class Openverse_Connect_API extends Opensource_Media_Connect_Admin {
 		);
 	}
 } 
+
