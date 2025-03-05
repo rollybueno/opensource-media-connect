@@ -24,7 +24,7 @@ class Openverse_Connect {
 	/**
 	 * Admin instance.
 	 *
-	 * @var Openverse_Connect_Admin
+	 * @var Opensource_Media_Connect_Admin
 	 */
 	public $admin;
 
@@ -59,8 +59,8 @@ class Openverse_Connect {
 	 * Include required files.
 	 */
 	private function includes() {
-		require_once OPENVERSE_CONNECT_PLUGIN_DIR . 'includes/class-openverse-connect-admin.php';
-		require_once OPENVERSE_CONNECT_PLUGIN_DIR . 'includes/class-openverse-connect-api.php';
+		require_once OPENSOURCE_MEDIA_CONNECT_PLUGIN_DIR . 'includes/class-openverse-connect-admin.php';
+		require_once OPENSOURCE_MEDIA_CONNECT_PLUGIN_DIR . 'includes/class-openverse-connect-api.php';
 	}
 
 	/**
@@ -75,7 +75,7 @@ class Openverse_Connect {
 	 * Initialize plugin.
 	 */
 	public function init() {
-		$this->admin = new Openverse_Connect_Admin();
+		$this->admin = new Opensource_Media_Connect_Admin();
 		$this->api = new Openverse_Connect_API();
 		
 		// Load text domain.
@@ -97,9 +97,9 @@ class Openverse_Connect {
 	public function enqueue_block_editor_assets() {
 		wp_enqueue_style(
 			'openverse-connect-editor',
-			OPENVERSE_CONNECT_PLUGIN_URL . 'assets/css/editor.css',
+			OPENSOURCE_MEDIA_CONNECT_PLUGIN_URL . 'assets/css/editor.css',
 			array(),
-			OPENVERSE_CONNECT_VERSION
+			OPENSOURCE_MEDIA_CONNECT_VERSION
 		);
 	}
 

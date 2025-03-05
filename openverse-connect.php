@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: Opensource Media
+ * Plugin Name: Open Source Media Connect
  * Plugin URI: https://wordpress.org/plugins/opensource-media/
- * Description: A WordPress plugin to search and embed media from Openverse.
+ * Description: Open Source Media Connect seamlessly integrates Openverse with your WordPress site, enabling you to effortlessly search, browse, and embed high-quality, copyright-free media content directly into your posts and pages. OpenVerse Connect ensures that your site stays rich with diverse, free-to-use media.
  * Version: 1.0.0
- * Author: Your Name
- * Author URI: https://yourwebsite.com
+ * Author: Rolly Bueno
+ * Author URI: https://rollybueno.com
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: opensource-media
@@ -19,12 +19,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'OPENVERSE_CONNECT_VERSION', '1.0.0' );
-define( 'OPENVERSE_CONNECT_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'OPENVERSE_CONNECT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'OPENSOURCE_MEDIA_CONNECT_VERSION', '1.0.0' );
+define( 'OPENSOURCE_MEDIA_CONNECT_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'OPENSOURCE_MEDIA_CONNECT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 // Include the main plugin class.
-require_once OPENVERSE_CONNECT_PLUGIN_DIR . 'includes/class-openverse-connect.php';
+require_once OPENSOURCE_MEDIA_CONNECT_PLUGIN_DIR . 'includes/class-openverse-connect.php';
 
 /**
  * Main function to initialize the plugin.
@@ -87,21 +87,21 @@ register_uninstall_hook( __FILE__, 'openverse_connect_uninstall' );
  */
 function openverse_connect_register_block() {
 	// Check if build directory exists.
-	$build_dir = OPENVERSE_CONNECT_PLUGIN_DIR . 'build/openverse-search';
+	$build_dir = OPENSOURCE_MEDIA_CONNECT_PLUGIN_DIR . 'build/openverse-search';
 
 	if ( file_exists( $build_dir ) && file_exists( $build_dir . '/block.json' ) ) {
 		// Register block from build directory.
 		register_block_type( $build_dir );
 	} else {
 		// Fallback to source directory for development.
-		$source_dir = OPENVERSE_CONNECT_PLUGIN_DIR . 'blocks/openverse-search';
+		$source_dir = OPENSOURCE_MEDIA_CONNECT_PLUGIN_DIR . 'blocks/openverse-search';
 		if ( file_exists( $source_dir ) && file_exists( $source_dir . '/block.json' ) ) {
 			register_block_type( $source_dir );
 		} else {
 			// Manual registration as last resort.
 			wp_register_script(
 				'openverse-connect-block',
-				OPENVERSE_CONNECT_PLUGIN_URL . 'blocks/openverse-search/src/index.js',
+				OPENSOURCE_MEDIA_CONNECT_PLUGIN_URL . 'blocks/openverse-search/src/index.js',
 				array(
 					'wp-blocks',
 					'wp-element',
@@ -110,7 +110,7 @@ function openverse_connect_register_block() {
 					'wp-i18n',
 					'wp-api-fetch',
 				),
-				filemtime( OPENVERSE_CONNECT_PLUGIN_DIR . 'blocks/openverse-search/src/index.js' ),
+				filemtime( OPENSOURCE_MEDIA_CONNECT_PLUGIN_DIR . 'blocks/openverse-search/src/index.js' ),
 				true
 			);
 

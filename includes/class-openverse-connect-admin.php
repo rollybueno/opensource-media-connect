@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class Openverse_Connect_Admin {
+class Opensource_Media_Connect_Admin {
 
 	/**
 	 * Constructor.
