@@ -55,7 +55,7 @@ export default function Edit({ attributes, setAttributes }) {
         try {
             const currentPage = resetResults ? 1 : page;
             const response = await apiFetch({
-                path: `/openverse-connect/v1/search?q=${encodeURIComponent(query)}&page=${currentPage}&media_type=${mediaType}&license=${license}`,
+                path: `/opensource-media-connect/v1/search?q=${encodeURIComponent(query)}&page=${currentPage}&media_type=${mediaType}&license=${license}`,
                 method: 'GET',
             });
             
