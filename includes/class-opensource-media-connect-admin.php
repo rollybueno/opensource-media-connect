@@ -32,6 +32,7 @@ class Opensource_Media_Connect_Admin {
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_post_opensource_media_connect_oauth', array( $this, 'handle_oauth_redirect' ) );
 		add_action( 'admin_post_opensource_media_register_app', array( $this, 'handle_app_registration' ) );
+		add_action( 'admin_post_opensource_media_connect_token', array( $this, 'handle_token_request' ) );
 		add_action( 'admin_notices', array( $this, 'display_oauth_notices' ) );
 	}
 
@@ -112,11 +113,22 @@ class Opensource_Media_Connect_Admin {
 		$show_manual_credentials = isset( $_GET['error'] ) && 'email_already_registered' === $_GET['error'];
 		?>
 		<div class="wrap">
-			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+			<h1><?php echo esc_html__( 'Open Source Media Settings', 'opensource-media-connect' ); ?></h1>
 
 			<?php if ( ! $is_connected ) : ?>
 				<div class="notice notice-info">
 					<p><?php esc_html_e( 'You need to connect to Openverse to use this plugin.', 'opensource-media-connect' ); ?></p>
+					<?php if ( $has_credentials ) : ?>
+					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+						<input type="hidden" name="action" value="opensource_media_connect_token">
+						<?php wp_nonce_field( 'opensource_media_connect_token' ); ?>
+						<p>
+							<button type="submit" class="button button-primary">
+								<?php esc_html_e( 'Connect to Openverse', 'opensource-media-connect' ); ?>
+							</button>
+						</p>
+					</form>
+				<?php endif; ?>
 				</div>
 			<?php endif; ?>
 
@@ -462,6 +474,51 @@ class Opensource_Media_Connect_Admin {
 			</div>
 			<?php
 		}
+	}
+
+	/**
+	 * Handle token request.
+	 *
+	 * Processes the token request when the connect button is clicked.
+	 * Gets a new access token using client credentials and saves it.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function handle_token_request() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'opensource-media-connect' ) );
+		}
+
+		check_admin_referer( 'opensource_media_connect_token' );
+
+		$access_token = $this->get_client_credentials_token();
+
+		if ( is_wp_error( $access_token ) ) {
+			wp_safe_redirect(
+				add_query_arg(
+					array(
+						'page'        => 'opensource-media-connect',
+						'oauth_error' => urlencode( $access_token->get_error_message() ),
+					),
+					admin_url( 'options-general.php' )
+				)
+			);
+			exit;
+		}
+
+		update_option( 'opensource_media_connect_access_token', $access_token );
+
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'page'          => 'opensource-media-connect',
+					'oauth_success' => '1',
+				),
+				admin_url( 'options-general.php' )
+			)
+		);
+		exit;
 	}
 }
 
