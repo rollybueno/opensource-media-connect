@@ -64,6 +64,16 @@ class Opensource_Media_Connect_Admin {
 	 * @return void
 	 */
 	public function register_settings() {
+		// Check and refresh access token if needed.
+		$access_token = get_transient( 'opensource_media_connect_access_token' );
+		if ( false === $access_token && get_option( 'opensource_media_connect_client_id' ) ) {
+			$new_token = $this->get_client_credentials_token();
+			if ( ! is_wp_error( $new_token ) ) {
+				update_option( 'opensource_media_connect_access_token', $new_token );
+			}
+		}
+
+		// Register client ID setting.
 		register_setting(
 			'opensource_media_connect_settings',
 			'opensource_media_connect_client_id',
@@ -74,6 +84,7 @@ class Opensource_Media_Connect_Admin {
 			)
 		);
 
+		// Register client secret setting.
 		register_setting(
 			'opensource_media_connect_settings',
 			'opensource_media_connect_client_secret',
@@ -84,6 +95,7 @@ class Opensource_Media_Connect_Admin {
 			)
 		);
 
+		// Register access token setting.
 		register_setting(
 			'opensource_media_connect_settings',
 			'opensource_media_connect_access_token',
