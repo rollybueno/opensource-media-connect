@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Openverse Connect 1.0.0\n"
+"Project-Id-Version: Opensource Media 1.0.0\n"
 "POT-Creation-Date: 2024-03-20 12:00+0000\n"
 "PO-Revision-Date: 2024-03-20 12:00+0000\n"
 "Last-Translator: \n"
@@ -19,10 +19,10 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
 
 msgid "Openverse Connect Settings"
-msgstr "Paramètres Openverse Connect"
+msgstr "Paramètres Opensource Media"
 
 msgid "Openverse Connect"
-msgstr "Openverse Connect"
+msgstr "Opensource Media"
 
 msgid "You need to connect to Openverse to use this plugin."
 msgstr "Vous devez vous connecter à Openverse pour utiliser ce plugin."
