@@ -69,11 +69,11 @@ export default function Edit({ attributes, setAttributes }) {
                 
                 setHasMore(response.page_count > currentPage);
             } else {
-                setError(__('No results found', 'openverse-connect'));
+                setError(__('No results found', 'opensource-media-connect'));
                 setSearchResults([]);
             }
         } catch (err) {
-            setError(__('Error searching Openverse', 'openverse-connect'));
+            setError(__('Error searching Openverse', 'opensource-media-connect'));
             console.error('Openverse search error:', err);
         } finally {
             setIsSearching(false);
@@ -122,9 +122,9 @@ export default function Edit({ attributes, setAttributes }) {
     };
 
     const imageSizeOptions = [
-        { label: __('Small', 'openverse-connect'), value: 'small' },
-        { label: __('Medium', 'openverse-connect'), value: 'medium' },
-        { label: __('Large', 'openverse-connect'), value: 'large' },
+        { label: __('Small', 'opensource-media-connect'), value: 'small' },
+        { label: __('Medium', 'opensource-media-connect'), value: 'medium' },
+        { label: __('Large', 'opensource-media-connect'), value: 'large' },
     ];
 
     const renderAttribution = (media) => {
@@ -132,8 +132,8 @@ export default function Edit({ attributes, setAttributes }) {
         
         return (
             <figcaption className="wp-element-caption openverse-attribution">
-                    {__('Creator:', 'openverse-connect')} {media.creator || __('Unknown', 'openverse-connect')} | 
-                    {__('License:', 'openverse-connect')} {media.license}
+                    {__('Creator:', 'opensource-media-connect')} {media.creator || __('Unknown', 'opensource-media-connect')} | 
+                    {__('License:', 'opensource-media-connect')} {media.license}
             </figcaption>
         );
     };
@@ -145,7 +145,7 @@ export default function Edit({ attributes, setAttributes }) {
         return (
             <>
                 <ToggleControl
-                    label={__('Show Attribution', 'openverse-connect')}
+                    label={__('Show Attribution', 'opensource-media-connect')}
                     checked={showAttribution}
                     onChange={(value) => {
                         setAttributes({ showAttribution: value });
@@ -156,7 +156,7 @@ export default function Edit({ attributes, setAttributes }) {
                 {mediaType === 'image' && (
                     <>
                         <TextControl
-                            label={__('Caption', 'openverse-connect')}
+                            label={__('Caption', 'opensource-media-connect')}
                             value={localCaption}
                             onChange={(value) => setLocalCaption(value)}
                             onBlur={() => {
@@ -170,16 +170,16 @@ export default function Edit({ attributes, setAttributes }) {
                                     });
                                 }
                             }}
-                            help={__('Add a caption to display below the image.', 'openverse-connect')}
+                            help={__('Add a caption to display below the image.', 'opensource-media-connect')}
                             __nextHasNoMarginBottom={ true }
                         />
                 
                         <TextControl
-                            label={__('Alt Text', 'openverse-connect')}
+                            label={__('Alt Text', 'opensource-media-connect')}
                             value={localAltText}
                             onChange={(value) => setLocalAltText(value)}
                             onBlur={() => setAttributes({ altText: escapeHTML(localAltText) })}
-                            help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'openverse-connect')}
+                            help={__('Alternative text describes your image to people who can\'t see it. Add a short description with its key details.', 'opensource-media-connect')}
                             __nextHasNoMarginBottom={ true }
                         />
                         
@@ -217,16 +217,16 @@ export default function Edit({ attributes, setAttributes }) {
             <div className="openverse-search-interface">
                 <Placeholder
                     icon="search"
-                    label={__('Openverse Media Search', 'openverse-connect')}
-                    instructions={__('Search for free and openly licensed media from Openverse', 'openverse-connect')}
+                    label={__('Open Source Media Search', 'opensource-media-connect')}
+                    instructions={__('Search for free and openly licensed media from Openverse', 'opensource-media-connect')}
                 >
                     <div className="openverse-search-controls">                        
                         <TextControl
-                            label={__('Search Query', 'openverse-connect')}
+                            label={__('Search Query', 'opensource-media-connect')}
                             hideLabelFromVision={true}
                             value={query}
                             onChange={(value) => setAttributes({ query: value })}
-                            placeholder={__('Enter search terms...', 'openverse-connect')}
+                            placeholder={__('Enter search terms...', 'opensource-media-connect')}
                             __nextHasNoMarginBottom={ true }
                             __next40pxDefaultSize={ true }
                         />
@@ -237,7 +237,7 @@ export default function Edit({ attributes, setAttributes }) {
                                 onClick={() => performSearch(true)}
                                 disabled={!query.trim() || isSearching}
                             >
-                                {isSearching ? <Spinner /> : __('Search', 'openverse-connect')}
+                                {isSearching ? <Spinner /> : __('Search', 'opensource-media-connect')}
                             </Button>
                             
                             {previousMediaRef.current && (
@@ -246,7 +246,7 @@ export default function Edit({ attributes, setAttributes }) {
                                     onClick={cancelSearch}
                                     className="openverse-cancel-search"
                                 >
-                                    {__('Cancel', 'openverse-connect')}
+                                    {__('Cancel', 'opensource-media-connect')}
                                 </Button>
                             )}
                         </div>
@@ -261,7 +261,7 @@ export default function Edit({ attributes, setAttributes }) {
 
                 {searchResults.length > 0 && (
                     <div className="openverse-search-results">
-                        <h3>{__('Search Results', 'openverse-connect')}</h3>
+                        <h3>{__('Search Results', 'opensource-media-connect')}</h3>
                         <div className="openverse-results-grid">
                             {searchResults.map((item) => (
                                 <div 
@@ -302,7 +302,7 @@ export default function Edit({ attributes, setAttributes }) {
                                 disabled={isSearching}
                                 className="openverse-load-more button button-secondary"
                             >
-                                {isSearching ? <Spinner /> : __('Load More', 'openverse-connect')}
+                                {isSearching ? <Spinner /> : __('Load More', 'opensource-media-connect')}
                             </Button>
                         )}
                     </div>
@@ -318,7 +318,7 @@ export default function Edit({ attributes, setAttributes }) {
                     <ToolbarGroup>
                         <ToolbarButton
                             icon={replace}
-                            label={__('Replace Media', 'openverse-connect')}
+                            label={__('Replace Media', 'opensource-media-connect')}
                             onClick={resetSelection}
                         />
                     </ToolbarGroup>
@@ -326,12 +326,12 @@ export default function Edit({ attributes, setAttributes }) {
             )}
             
             <InspectorControls>
-                <PanelBody title={__('Media Settings', 'openverse-connect')} initialOpen={true}>
+                <PanelBody title={__('Media Settings', 'opensource-media-connect')} initialOpen={true}>
                     <MediaSettingsPanel />
                     {mediaType === 'image' && (
                         <>
                             <SelectControl
-                                label={__('Image Size', 'openverse-connect')}
+                                label={__('Image Size', 'opensource-media-connect')}
                                 value={imageSize}
                                 options={imageSizeOptions}
                                 onChange={(value) => setAttributes({ imageSize: value })}
@@ -339,7 +339,7 @@ export default function Edit({ attributes, setAttributes }) {
                             />
                             
                             <RangeControl
-                                label={__('Maximum Width (%)', 'openverse-connect')}
+                                label={__('Maximum Width (%)', 'opensource-media-connect')}
                                 value={maxWidth}
                                 onChange={(value) => setAttributes({ maxWidth: value })}
                                 min={10}

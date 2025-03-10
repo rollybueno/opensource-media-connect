@@ -32,11 +32,11 @@ export default function Save({ attributes }) {
                 {imageCaption && (
                     <>
                         {imageCaption}
+                        <br />
                     </>
                 )}
                 {showAttribution && (
-                    <>
-                        <br />
+                    <>                        
                         Creator: {selectedMedia.creator || 'Unknown'} | 
                         License: {selectedMedia.license}
                     </>

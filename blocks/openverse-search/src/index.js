@@ -16,14 +16,14 @@ import '../block.json';
 
 // Register the block
 registerBlockType('openverse-connect/search', {
-    title: __('Open Source Media', 'openverse-connect'),
-    description: __('Search and insert media from Openverse', 'openverse-connect'),
+    title: __('Open Source Media', 'opensource-media-connect'),
+    description: __('Search and insert media from Openverse', 'opensource-media-connect'),
     icon: 'format-image',
     category: 'media',
     keywords: [
-        __('openverse', 'openverse-connect'),
-        __('image', 'openverse-connect'),
-        __('search', 'openverse-connect'),
+        __('openverse', 'opensource-media-connect'),
+        __('image', 'opensource-media-connect'),
+        __('search', 'opensource-media-connect'),
     ],
     edit: Edit,
     save: Save,
