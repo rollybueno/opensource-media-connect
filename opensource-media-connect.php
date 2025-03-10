@@ -8,7 +8,7 @@
  * Author URI: https://rollybueno.com
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: opensource-media
+ * Text Domain: opensource-media-connect
  * Domain Path: /languages
  *
  * @package Opensource_Media
