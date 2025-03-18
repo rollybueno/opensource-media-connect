@@ -36,6 +36,12 @@ No, the Open Source Media Connect WP Plugin does not support the classic theme. 
 = Does the media come with copyright? =
 No, the media provided through Open Source Media Connect does not come with copyright concerns. The plugin uses the Openverse API, which offers a wide range of media under various copyright licenses that are safe for you to use on your blog posts or pages. You can freely embed these resources without the risk of violating copyright laws, as all media is open for commercial and personal use based on the specific license.
 
+== Screenshots ==
+1. Open Source Media block. You can find this by searching "Open Source Media".
+2. Block settings where you can adjust options such as Attribution, alt text, caption and image size.
+3. Block search settings. Simply search any keywords and it will display results which you can insert into your post
+4. Plugin settings. The data will be automatically registered after you click "Connect" button.
+
 == Changelog ==
 1.0.0
 Initial version
