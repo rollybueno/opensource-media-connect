@@ -27,10 +27,13 @@ Whether you\'re creating blog posts, landing pages, or portfolio galleries, Open
 Open Source Media Connect ensures your site remains filled with high-quality media, making it easier than ever to enhance your content and engage your audience, all while keeping everything copyright-safe and free to use.
 
 == Frequently Asked Questions ==
-Does Open Source Media Connect work with a classic theme?
+= Do I need to register in Openverse? =
+No, you don't need to manually register for Openverse. The plugin will take care of the registration and connection process for you. All you need to do is just click the Connect button on the plugin settings, and the plugin will automatically handle the rest, ensuring a smooth integration with Openverse.
+
+= Does Open Source Media Connect work with a classic theme? =
 No, the Open Source Media Connect WP Plugin does not support the classic theme. It is designed to work with more modern themes that are compatible with its features. To ensure full functionality, we recommend using a theme that is up-to-date and optimized for the plugin’s capabilities.
 
-Does the media come with copyright?
+= Does the media come with copyright? =
 No, the media provided through Open Source Media Connect does not come with copyright concerns. The plugin uses the Openverse API, which offers a wide range of media under various copyright licenses that are safe for you to use on your blog posts or pages. You can freely embed these resources without the risk of violating copyright laws, as all media is open for commercial and personal use based on the specific license.
 
 == Changelog ==
