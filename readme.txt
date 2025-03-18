@@ -16,13 +16,14 @@ With Open Source Media Connect, accessing Openverse’s vast library of open-sou
 
 Whether you\'re creating blog posts, landing pages, or portfolio galleries, Open Source Media Connect ensures your site stays rich with a wide range of media content that enhances your message and brand. By leveraging the power of Openverse, this plugin guarantees that all content used is freely available and open for reuse, so you can focus on what truly matters – creating great content for your audience.
 
-Key Features:
+## Key Features: ##
 
-Seamless Integration: Effortlessly connect Openverse with your WordPress site, unlocking a treasure trove of copyright-free media.
-Easy Search & Embed: Find and embed high-quality images, videos, and audio files directly within your WordPress editor.
-Diverse Media Library: Access a wide range of free-to-use media content, including images, videos, and music, all licensed for commercial and personal use.
-Time-Saving: Search for media and embed it directly into your posts without leaving your WordPress dashboard.
-Completely Free: Use the plugin to access and embed open-source media without worrying about licensing fees or copyright issues.
+1. **Seamless Integration**: Effortlessly connect Openverse with your WordPress site, unlocking a treasure trove of copyright-free media.
+2. **Easy Search & Embed**: Find and embed high-quality images, videos, and audio files directly within your WordPress editor.
+3. **Diverse Media Library**: Access a wide range of free-to-use media content including images all licensed for commercial and personal use. Audio will be supported on future releases.
+4. **Time-Saving**: Search for media and embed it directly into your posts without leaving your WordPress dashboard.
+5. **Completely Free**: Use the plugin to access and embed open-source media without worrying about licensing fees or copyright issues.
+
 Open Source Media Connect ensures your site remains filled with high-quality media, making it easier than ever to enhance your content and engage your audience, all while keeping everything copyright-safe and free to use.
 
 == Frequently Asked Questions ==
