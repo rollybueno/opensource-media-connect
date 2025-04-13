@@ -216,6 +216,13 @@ class Opensource_Media_Connect_Admin {
 				<?php if ( $has_credentials ) : ?>
 					<hr>
 					<h3><?php esc_html_e( 'Application Credentials', 'opensource-media-connect' ); ?></h3>
+					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+						<input type="hidden" name="action" value="opensource_media_connect_token">
+						<?php wp_nonce_field( 'opensource_media_connect_token' ); ?>
+						<button type="submit" class="button button-primary">
+							<?php esc_html_e( 'Generate Token', 'opensource-media-connect' ); ?>
+						</button>
+					</form>
 					<table class="form-table" role="presentation">
 						<tr>
 							<th scope="row"><?php esc_html_e( 'Client ID', 'opensource-media-connect' ); ?></th>
@@ -420,7 +427,7 @@ class Opensource_Media_Connect_Admin {
 		}
 
 		$access_token = $body['access_token'];
-		set_transient( 'opensource_media_connect_access_token', $access_token, HOUR_IN_SECONDS );
+		set_transient( 'opensource_media_connect_access_token', $access_token, $body['expires_in'] );
 
 		return $access_token;
 	}
