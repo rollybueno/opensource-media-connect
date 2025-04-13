@@ -128,7 +128,7 @@ add_action( 'init', 'opensource_media_connect_register_block' );
 // Load text domain for translations.
 function opensource_media_load_textdomain() {
 	load_plugin_textdomain(
-		'opensource-media',
+		'opensource-media-connect',
 		false,
 		dirname( plugin_basename( __FILE__ ) ) . '/languages'
 	);

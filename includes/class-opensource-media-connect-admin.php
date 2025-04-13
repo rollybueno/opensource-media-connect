@@ -122,6 +122,14 @@ class Opensource_Media_Connect_Admin {
 		$access_token            = get_option( 'opensource_media_connect_access_token' );
 		$is_connected            = ! empty( $access_token );
 		$has_credentials         = ! empty( $client_id ) && ! empty( $client_secret );
+
+		/**
+		 * This is not a form submission, so we need to check for the error parameter
+		 * to determine if the user has already registered with Openverse.
+		 * 
+		 * Ignore the lint warning
+		 */
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$show_manual_credentials = isset( $_GET['error'] ) && 'email_already_registered' === $_GET['error'];
 		?>
 		<div class="wrap">
@@ -469,6 +477,10 @@ class Opensource_Media_Connect_Admin {
 			return;
 		}
 
+		/**
+		 * This is not a form submission, ignore the lint warning
+		 */
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( isset( $_GET['oauth_success'] ) ) {
 			?>
 			<div class="notice notice-success is-dismissible">
@@ -477,7 +489,15 @@ class Opensource_Media_Connect_Admin {
 			<?php
 		}
 
+		/**
+		 * This is not a form submission, ignore the lint warning
+		 */
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( isset( $_GET['oauth_error'] ) ) {
+			/**
+			 * This is not a form submission, ignore the lint warning
+			 */
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$error = sanitize_text_field( wp_unslash( $_GET['oauth_error'] ) );
 			?>
 			<div class="notice notice-error is-dismissible">
