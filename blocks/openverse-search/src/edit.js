@@ -334,6 +334,7 @@ export default function Edit({ attributes, setAttributes }) {
                                 label={__('Image Size', 'opensource-media-connect')}
                                 value={imageSize}
                                 options={imageSizeOptions}
+                                help={__('This will add classes to the image element to control its size. e.g. Selecting Medium will add `size-medium` class to the image element which you can style with CSS.', 'opensource-media-connect')}
                                 onChange={(value) => setAttributes({ imageSize: value })}
                                 __nextHasNoMarginBottom={ true }
                             />
