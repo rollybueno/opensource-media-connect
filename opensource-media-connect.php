@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Open Source Media Connect
- * Plugin URI: https://rollybueno.com
+ * Plugin URI: https://www.rollybueno.com/open-source-media-connect/
  * Description: Open Source Media Connect seamlessly integrates Openverse with your WordPress site, enabling you to effortlessly search, browse, and embed high-quality, copyright-free media content directly into your posts and pages. Open Source Media Connect ensures that your site stays rich with diverse, free-to-use media.
  * Version: 1.0.0
  * Author: Rolly Bueno
