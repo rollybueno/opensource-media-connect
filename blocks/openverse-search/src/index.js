@@ -25,6 +25,49 @@ registerBlockType('openverse-connect/search', {
         __('image', 'opensource-media-connect'),
         __('search', 'opensource-media-connect'),
     ],
+    attributes: {
+        query: {
+            type: 'string',
+            default: ''
+        },
+        mediaType: {
+            type: 'string',
+            default: 'image'
+        },
+        license: {
+            type: 'string',
+            default: 'all'
+        },
+        selectedMedia: {
+            type: 'object',
+            default: null
+        },
+        showAttribution: {
+            type: 'boolean',
+            default: true
+        },
+        imageSize: {
+            type: 'string',
+            default: 'medium'
+        },
+        maxWidth: {
+            type: 'number',
+            default: 100
+        },
+        altText: {
+            type: 'string',
+            default: ''
+        },
+        imageCaption: {
+            type: 'string',
+            default: ''
+        }
+    },
+    supports: {
+        html: false,
+        align: ['wide', 'full', 'center', 'left', 'right'],
+        className: true
+    },
     edit: Edit,
     save: Save,
 }); 

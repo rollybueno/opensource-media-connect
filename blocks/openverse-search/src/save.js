@@ -10,7 +10,9 @@ import { useBlockProps } from '@wordpress/block-editor';
  * @return {JSX.Element} Block save component.
  */
 export default function Save({ attributes }) {
-    const blockProps = useBlockProps.save();
+    const blockProps = useBlockProps.save({
+        className: 'openverse-media-block wp-block-image'
+    });
     const { 
         selectedMedia, 
         showAttribution,
@@ -50,7 +52,7 @@ export default function Save({ attributes }) {
             <img 
                 src={selectedMedia.url} 
                 alt={altText || selectedMedia.title || ''}
-                className={`size-${imageSize}`}
+                className={`openverse-media-image wp-block-image size-${imageSize}`}
                 style={{ maxWidth: `${maxWidth}%` }}
             />
             
