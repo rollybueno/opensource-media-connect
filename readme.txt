@@ -2,7 +2,7 @@
 Contributors: rollybueno
 Tags: openverse, images, media, open source, creative commons
 Requires at least: 6.0
-Tested up to: 6.4
+Tested up to: 6.8
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -24,9 +24,9 @@ Once configured, users can easily add open-source images using the Open Source M
 == Privacy Policy ==
 
 This plugin does not track users or collect any personal data. The only data transmitted is:
--  Search queries sent to Openverse API
--  API key for authentication
--  Selected media information for embedding
+* Search queries sent to Openverse API
+* API key for authentication
+* Selected media information for embedding
 
 All data transmission is done with explicit user consent through the WordPress interface. No data is stored locally or transmitted to any third-party services other than Openverse.
 
