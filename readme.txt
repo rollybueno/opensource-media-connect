@@ -24,9 +24,9 @@ Once configured, users can easily add open-source images using the Open Source M
 == Privacy Policy ==
 
 This plugin does not track users or collect any personal data. The only data transmitted is:
-* Search queries sent to Openverse API
-* API key for authentication
-* Selected media information for embedding
+-  Search queries sent to Openverse API
+-  API key for authentication
+-  Selected media information for embedding
 
 All data transmission is done with explicit user consent through the WordPress interface. No data is stored locally or transmitted to any third-party services other than Openverse.
 
@@ -75,6 +75,8 @@ Yes, you need an API key to use the Openverse API. You can obtain an API key by:
 2. Going to your account settings
 3. Generating an API key
 4. Adding the API key in the plugin's settings page (Settings → Open Source Media)
+
+Additionally, you can simply connect your site to Openverse in single click on Settings -> Open Source Media
 
 = What types of media can I search for? =
 Currently, the plugin supports searching for images. More media types will be added in future updates.
