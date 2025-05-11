@@ -124,13 +124,3 @@ function opensource_media_connect_register_block() {
 	}
 }
 add_action( 'init', 'opensource_media_connect_register_block' );
-
-// Load text domain for translations.
-function opensource_media_load_textdomain() {
-	load_plugin_textdomain(
-		'opensource-media-connect',
-		false,
-		dirname( plugin_basename( __FILE__ ) ) . '/languages'
-	);
-}
-add_action( 'plugins_loaded', 'opensource_media_load_textdomain' );
