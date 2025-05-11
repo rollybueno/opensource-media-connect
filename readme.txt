@@ -21,6 +21,15 @@ Once configured, users can easily add open-source images using the Open Source M
 - Adjustable media width
 - Optional media attribution display
 
+== Privacy Policy ==
+
+This plugin does not track users or collect any personal data. The only data transmitted is:
+* Search queries sent to Openverse API
+* API key for authentication
+* Selected media information for embedding
+
+All data transmission is done with explicit user consent through the WordPress interface. No data is stored locally or transmitted to any third-party services other than Openverse.
+
 == Openverse API Integration ==
 
 This plugin uses the Openverse API to search and retrieve open-source media. Openverse is a search engine for openly-licensed media, including images, audio, and other media types.
@@ -41,19 +50,19 @@ This plugin uses the Openverse API to search and retrieve media. When using this
 = Attribution Requirements =
 When using media from Openverse, proper attribution is required. The plugin automatically handles attribution when the "Show Attribution" option is enabled.
 
-== Screenshots ==
-
-1. Open Source Media block in the editor
-2. Openverse search interface
-3. Media settings panel
-4. Plugin settings page
-
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/opensource-media` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Use the Settings->Open Source Media screen to configure the plugin
 4. Use the Open Source Media block to search and embed images
+
+== Screenshots ==
+
+1. Open Source Media block in the editor
+2. Openverse search interface
+3. Media settings panel
+4. Plugin settings page
 
 == Frequently Asked Questions ==
 
@@ -69,6 +78,9 @@ Yes, you need an API key to use the Openverse API. You can obtain an API key by:
 
 = What types of media can I search for? =
 Currently, the plugin supports searching for images. More media types will be added in future updates.
+
+= Does this plugin track users? =
+No, this plugin does not track users or collect any personal data. The only data transmitted is search queries and selected media information to the Openverse API, which is done with explicit user consent through the WordPress interface.
 
 == Changelog ==
 
