@@ -1,47 +1,81 @@
 === Open Source Media Connect ===
-Tags: opensource media, free media, openverse, images
-Requires at least: 5.0
-Tested up to: 6.8
-Requires PHP: 7.0
+Contributors: rollybueno
+Tags: openverse, images, media, open source, creative commons
+Requires at least: 6.0
+Tested up to: 6.4
 Stable tag: 1.0.0
 License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Open Source Media Connect seamlessly integrates Openverse with your WordPress site.
+Search and embed open source images from Openverse directly in your WordPress posts and pages.
 
 == Description ==
-Open Source Media Connect is a powerful and user-friendly WordPress plugin designed to seamlessly integrate Openverse with your website. By doing so, it allows you to effortlessly search, browse, and embed a wide variety of high-quality, copyright-free media content directly into your posts and pages. This plugin is a perfect solution for bloggers, content creators, and website owners looking to enrich their sites with free-to-use media, from stunning images and illustrations to captivating audio and video, all without the worry of copyright infringement.
 
-With Open Source Media Connect, accessing Openverse’s vast library of open-source media has never been easier. The plugin enables you to search for relevant images, music, and videos directly within your WordPress dashboard, saving you time and effort. You can then embed these resources into your content with just a few clicks, providing your audience with engaging and diverse media while maintaining a seamless user experience.
+Open Source Media Connect is a powerful and user-friendly WordPress plugin designed to seamlessly integrates with the Openverse API to enable users to search and embed open-source images directly into their posts and pages. The plugin features a straightforward setup process with a single configuration option in Settings → Open Source Media for connecting to the Openverse service.
 
-Whether you\'re creating blog posts, landing pages, or portfolio galleries, Open Source Media Connect ensures your site stays rich with a wide range of media content that enhances your message and brand. By leveraging the power of Openverse, this plugin guarantees that all content used is freely available and open for reuse, so you can focus on what truly matters – creating great content for your audience.
+Once configured, users can easily add open-source images using the Open Source Media block. The block offers a comprehensive set of features:
 
-## Key Features: ##
+- Keyword-based image search
+- Customizable image settings including caption and alt text
+- Flexible sizing options with size classes
+- Adjustable media width
+- Optional media attribution display
 
-1. **Seamless Integration**: Effortlessly connect Openverse with your WordPress site, unlocking a treasure trove of copyright-free media.
-2. **Easy Search & Embed**: Find and embed high-quality images, videos, and audio files directly within your WordPress editor.
-3. **Diverse Media Library**: Access a wide range of free-to-use media content including images all licensed for commercial and personal use. Audio will be supported on future releases.
-4. **Time-Saving**: Search for media and embed it directly into your posts without leaving your WordPress dashboard.
-5. **Completely Free**: Use the plugin to access and embed open-source media without worrying about licensing fees or copyright issues.
+== Openverse API Integration ==
 
-Open Source Media Connect ensures your site remains filled with high-quality media, making it easier than ever to enhance your content and engage your audience, all while keeping everything copyright-safe and free to use.
+This plugin uses the Openverse API to search and retrieve open-source media. Openverse is a search engine for openly-licensed media, including images, audio, and other media types.
 
-== Frequently Asked Questions ==
-= Do I need to register in Openverse? =
-No, you don't need to manually register for Openverse. The plugin will take care of the registration and connection process for you. All you need to do is just click the Connect button on the plugin settings, and the plugin will automatically handle the rest, ensuring a smooth integration with Openverse.
+= API Features =
+* Search for openly-licensed media
+* Filter by license type
+* Retrieve media metadata
+* Access high-quality media files
+* Support for various media types
 
-= Does Open Source Media Connect work with a classic theme? =
-No, the Open Source Media Connect WP Plugin does not support the classic theme. It is designed to work with more modern themes that are compatible with its features. To ensure full functionality, we recommend using a theme that is up-to-date and optimized for the plugin’s capabilities.
+= Terms of Service =
+The plugin operates under Openverse's Terms of Service. Please review their terms at: [Openverse Terms of Use](https://docs.openverse.org/terms_of_service.html)
 
-= Does the media come with copyright? =
-No, the media provided through Open Source Media Connect does not come with copyright concerns. The plugin uses the Openverse API, which offers a wide range of media under various copyright licenses that are safe for you to use on your blog posts or pages. You can freely embed these resources without the risk of violating copyright laws, as all media is open for commercial and personal use based on the specific license.
+= Privacy Policy =
+This plugin uses the Openverse API to search and retrieve media. When using this plugin, please review Openverse's [Privacy Policy](https://openverse.org/privacy) to understand how your data is handled.
+
+= Attribution Requirements =
+When using media from Openverse, proper attribution is required. The plugin automatically handles attribution when the "Show Attribution" option is enabled.
 
 == Screenshots ==
-1. Open Source Media block. You can find this by searching "Open Source Media".
-2. Block settings where you can adjust options such as Attribution, alt text, caption and image size.
-3. Block search settings. Simply search any keywords and it will display results which you can insert into your post
-4. Plugin settings. The data will be automatically registered after you click "Connect" button.
+
+1. Open Source Media block in the editor
+2. Openverse search interface
+3. Media settings panel
+4. Plugin settings page
+
+== Installation ==
+
+1. Upload the plugin files to the `/wp-content/plugins/opensource-media` directory, or install the plugin through the WordPress plugins screen directly.
+2. Activate the plugin through the 'Plugins' screen in WordPress
+3. Use the Settings->Open Source Media screen to configure the plugin
+4. Use the Open Source Media block to search and embed images
+
+== Frequently Asked Questions ==
+
+= What is Openverse? =
+Openverse is a search engine for openly-licensed media. It provides access to millions of freely-usable media files.
+
+= Do I need an API key? =
+Yes, you need an API key to use the Openverse API. You can obtain an API key by:
+1. Creating an account at [Openverse](https://openverse.org)
+2. Going to your account settings
+3. Generating an API key
+4. Adding the API key in the plugin's settings page (Settings → Open Source Media)
+
+= What types of media can I search for? =
+Currently, the plugin supports searching for images. More media types will be added in future updates.
 
 == Changelog ==
-1.0.0
-Initial version
+
+= 1.0.0 =
+* Initial release
+
+== Upgrade Notice ==
+
+= 1.0.0 =
+Initial release
