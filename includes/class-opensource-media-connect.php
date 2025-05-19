@@ -69,6 +69,7 @@ class Opensource_Media_Connect {
 	private function init_hooks() {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
+		add_action( 'admin_enqueue_scripts', 'enqueue_admin_assets' );
 	}
 
 	/**
@@ -77,9 +78,6 @@ class Opensource_Media_Connect {
 	public function init() {
 		$this->admin = new Opensource_Media_Connect_Admin();
 		$this->api = new Opensource_Media_Connect_API();
-
-		// Load text domain.
-		load_plugin_textdomain( 'opensource-media', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	}
 
 	/**
@@ -101,6 +99,15 @@ class Opensource_Media_Connect {
 			array(),
 			OPENSOURCE_MEDIA_CONNECT_VERSION
 		);
+	}
+
+	/**
+	 * Enqueue admin assets
+	 * 
+	 * Make sure this only loads on intended admin pages to avoid cluttering
+	 */
+	public function enqueue_admin_assets() {
+		wp_enqueue_style( 'opensource-media-connect-amind-style', OPENSOURCE_MEDIA_CONNECT_PLUGIN_URL . 'assets/css/admin.css', array(), OPENSOURCE_MEDIA_CONNECT_VERSION );
 	}
 
 	/**

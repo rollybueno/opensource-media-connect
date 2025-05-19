@@ -1,0 +1,45 @@
+/** Admin style **/
+.opensource-media-connect-oauth {
+    margin-top: 20px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+.opensource-media-connect-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 15px 0;
+    font-size: 14px;
+}
+.opensource-media-connect-status .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+.opensource-media-connect-status.connected .dashicons {
+    color: #46b450;
+}
+.opensource-media-connect-status.not-connected .dashicons {
+    color: #dc3232;
+}
+.opensource-media-connect-status.not-registered .dashicons {
+    color: #007cba;
+}
+.description {
+    color: #646970;
+    font-style: italic;
+    margin: 5px 0 15px;
+}
+.manual-credentials {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f0f0f1;
+    border-left: 4px solid #007cba;
+}
+.manual-credentials label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
