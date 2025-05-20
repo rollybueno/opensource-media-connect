@@ -16,46 +16,41 @@ Open Source Media Connect is a powerful and user-friendly WordPress plugin desig
 
 Once configured, users can easily add open-source images using the Open Source Media block. The block offers a comprehensive set of features:
 
-- Keyword-based image search
-- Customizable image settings including caption and alt text
-- Flexible sizing options with size classes
-- Adjustable media width
-- Optional media attribution display
+– Keyword-based image search
+– Customizable image settings including caption and alt text
+– Flexible sizing options with size classes
+– Adjustable media width
+– Optional media attribution display
 
-== Privacy Policy ==
+== External Services ==
+This plugin uses the [Openverse API](https://api.openverse.org/) to obtain open-source media and place it inside your posts or pages as an image block. This service is provided by [Openverse.org](https://openverse.org/), which is part of the wider [WordPress.org](https://wordpress.org/) project, giving you a vast catalog of openly licensed visuals at your fingertips.
 
-This plugin does not track users or collect any personal data. The only data transmitted is:
-* Search queries sent to Openverse API
-* API key for authentication
-* Selected media information for embedding
+During setup, you may let the plugin create an Openverse account for you. If you select this option, the following data will be used to register through OAuth2:
 
-All data transmission is done with explicit user consent through the WordPress interface. No data is stored locally or transmitted to any third-party services other than Openverse.
+1. Site Name
+2. Admin Email Address
+3. Site URL - concatenated with "WordPress integration for " string
 
-== Openverse API Integration ==
+This plugin uses these information to request your Openverse's Client ID and Client Secret, which in turn will be used to request for API token, valid for up to ten hours, and automatically renews it whenever you use an Open Source Media block. 
 
-This plugin uses the Openverse API to search and retrieve open-source media. Openverse is a search engine for openly-licensed media, including images, audio, and other media types.
+Your Client ID, Client Secret, and Token are kept on your site and used solely to search and retrieve open-source media through the [Openverse API](https://api.openverse.org/). This plugin does not track users or collect any personal data, except your Openverse's Client ID, Client Secret and Token that will be used to search for media.
 
-= API Features =
-* Search for openly-licensed media
-* Filter by license type
-* Retrieve media metadata
-* Access high-quality media files
-* Support for various media types
+For full details, see Openverse’s documentation, policies, terms and license:
 
-= Terms of Service =
-The plugin operates under Openverse's Terms of Service. Please review their terms at: [Openverse Terms of Use](https://docs.openverse.org/terms_of_service.html)
+* [Openverse Terms of Use](https://docs.openverse.org/terms_of_service.html)
+* [Openverse Privacy](https://openverse.org/privacy)
+* [Openverse API](https://api.openverse.org/)
+* [About Openverse](https://openverse.org/about)
+* [Creative Commons License](https://creativecommons.org/share-your-work/cclicenses/)
 
-= Privacy Policy =
-This plugin uses the Openverse API to search and retrieve media. When using this plugin, please review Openverse's [Privacy Policy](https://openverse.org/privacy) to understand how your data is handled.
-
-= Attribution Requirements =
-When using media from Openverse, proper attribution is required. The plugin automatically handles attribution when the "Show Attribution" option is enabled.
+= Media Attribution =
+When using media from Openverse, proper attribution may be required, depending on your selected image license. The plugin automatically handles attribution when the "Show Attribution" option is enabled.
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/opensource-media` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin to the `/wp-content/plugins/` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
-3. Use the Settings->Open Source Media screen to configure the plugin
+3. Use the Settings -> Open Source Media screen to configure the plugin
 4. Use the Open Source Media block to search and embed images
 
 == Screenshots ==
@@ -72,18 +67,15 @@ Openverse is a search engine for openly-licensed media. It provides access to mi
 
 = Do I need an API key? =
 Yes, you need an API key to use the Openverse API. You can obtain an API key by:
-1. Creating an account at [Openverse](https://openverse.org)
-2. Going to your account settings
-3. Generating an API key
-4. Adding the API key in the plugin's settings page (Settings → Open Source Media)
 
-Additionally, you can simply connect your site to Openverse in single click on Settings -> Open Source Media
+1. Creating an account at [Openverse](https://openverse.org), generate the API key and add in the plugin's settings page (Settings <span aria-hidden="true" class="wp-exclude-emoji">→</span> Open Source Media)
+2. Or you can simply connect your site to Openverse in single click on Settings <span aria-hidden="true" class="wp-exclude-emoji">→</span> Open Source Media
 
 = What types of media can I search for? =
-Currently, the plugin supports searching for images. More media types will be added in future updates.
+Currently, the plugin only supports images. More media types will be added in future updates.
 
 = Does this plugin track users? =
-No, this plugin does not track users or collect any personal data. The only data transmitted is search queries and selected media information to the Openverse API, which is done with explicit user consent through the WordPress interface.
+No, this plugin does not track users or collect any personal data except storing the Client ID and Client Secret, that will be used to generate API Token, to be used to handle media search.
 
 == Changelog ==
 
