@@ -23,19 +23,19 @@ Once configured, users can easily add open-source images using the Open Source M
 – Optional media attribution display
 
 == External Services ==
-This plugin uses the [Openverse API](https://api.openverse.org/) to obtain open-source media and place it inside your posts or pages as an image block. This service is provided by [Openverse.org](https://openverse.org/), which is part of the wider [WordPress.org](https://wordpress.org/) project, giving you a vast catalog of openly licensed visuals at your fingertips.
+This plugin uses the [Openverse API](https://api.openverse.org/) to search open-source media and place it inside your posts or pages as an image block. This service is provided by [Openverse.org](https://openverse.org/), which is part of the wider [WordPress.org](https://wordpress.org/) project, giving you a vast catalog of openly licensed visuals at your fingertips.
 
-During setup, you may let the plugin create an Openverse account for you. If you select this option, the following data will be used to register through OAuth2:
+The following data will be used to register to Openverse through OAuth2:
 
 1. Site Name
 2. Admin Email Address
 3. Site URL - concatenated with "WordPress integration for " string
 
-This plugin uses these information to request your Openverse's Client ID and Client Secret, which in turn will be used to request for API token, valid for up to ten hours, and automatically renews it whenever you use an Open Source Media block. 
+This plugin uses these information to request your Openverse's Client ID and Client Secret, which in turn will be used to request for API token, valid for up to ten hours, and automatically renews it whenever you search image on Open Source Media block. 
 
-Your Client ID, Client Secret, and Token are kept on your site and used solely to search and retrieve open-source media through the [Openverse API](https://api.openverse.org/). This plugin does not track users or collect any personal data, except your Openverse's Client ID, Client Secret and Token that will be used to search for media.
+Your Client ID, Client Secret, and Token are kept on your site and used solely to search and retrieve open-source media through the [Openverse API](https://api.openverse.org/). This plugin does not track users or collect any personal data, except your Openverse's Client ID, Client Secret and Token.
 
-For full details, see Openverse’s documentation, policies, terms and license:
+For full details, see Openverse’s terms, privacy, API documenation, about and license:
 
 * [Openverse Terms of Use](https://docs.openverse.org/terms_of_service.html)
 * [Openverse Privacy](https://openverse.org/privacy)
