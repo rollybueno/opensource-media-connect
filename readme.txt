@@ -35,7 +35,7 @@ This plugin uses these information to request your Openverse's Client ID and Cli
 
 Your Client ID, Client Secret, and Token are kept on your site and used solely to search and retrieve open-source media through the [Openverse API](https://api.openverse.org/). This plugin does not track users or collect any personal data, except your Openverse's Client ID, Client Secret and Token.
 
-For full details, see Openverse’s terms, privacy, API documenation, about and license:
+For full details, see Openverse’s terms, privacy, API documentation, about and license:
 
 * [Openverse Terms of Use](https://docs.openverse.org/terms_of_service.html)
 * [Openverse Privacy](https://openverse.org/privacy)
