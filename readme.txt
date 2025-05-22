@@ -31,9 +31,11 @@ The following data will be used to register to Openverse through OAuth2:
 2. Admin Email Address
 3. Site URL - concatenated with "WordPress integration for " string
 
-This plugin uses these information to request your Openverse's Client ID and Client Secret, which in turn will be used to request for API token, valid for up to ten hours, and automatically renews it whenever you search image on Open Source Media block. 
+This plugin uses these information to request your Openverse's Client ID and Client Secret, which in turn will be used to request for API token, valid for up to ten hours, and automatically renews it whenever you search image on Open Source Media block. Your media search query will be used to search Openverse images to find match based on it and your Token is required to connect to the Openverse API media search endpoint.
 
-Your Client ID, Client Secret, and Token are kept on your site and used solely to search and retrieve open-source media through the [Openverse API](https://api.openverse.org/). This plugin does not track users or collect any personal data, except your Openverse's Client ID, Client Secret and Token.
+Your Client ID, Client Secret, and Token are kept on your site and used solely to search and retrieve open-source media through the [Openverse API image_search](https://api.openverse.org/v1/#tag/images/operation/images_search) endpoint. 
+
+This plugin does not track users or collect any personal data, except your Openverse's Client ID, Client Secret, Token and your search query to be used as optional alternative text.
 
 For full details, see Openverse’s terms, privacy, API documentation, about and license:
 
@@ -42,9 +44,6 @@ For full details, see Openverse’s terms, privacy, API documentation, about and
 * [Openverse API](https://api.openverse.org/)
 * [About Openverse](https://openverse.org/about)
 * [Creative Commons License](https://creativecommons.org/share-your-work/cclicenses/)
-
-= Media Attribution =
-When using media from Openverse, proper attribution may be required, depending on your selected image license. The plugin automatically handles attribution when the "Show Attribution" option is enabled.
 
 == Installation ==
 
