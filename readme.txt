@@ -23,19 +23,20 @@ Once configured, users can easily add open-source images using the Open Source M
 – Optional media attribution display
 
 == External Services ==
-This plugin uses the [Openverse API](https://api.openverse.org/) to search open-source media and place it inside your posts or pages as an image block. This service is provided by [Openverse.org](https://openverse.org/), which is part of the wider [WordPress.org](https://wordpress.org/) project, giving you a vast catalog of openly licensed visuals at your fingertips.
+This plugin uses the [Openverse API](https://api.openverse.org/) to search open-source media and place it inside your posts or pages as an image block. This service is provided by [Openverse.org](https://openverse.org/), which is part of the wider [WordPress.org](https://wordpress.org/) project, giving you a vast catalog of openly licensed images at your fingertips.
 
-The following data will be used to register to Openverse through OAuth2:
+The following information is required to interact with the Openverse API:
 
-1. Site Name
-2. Admin Email Address
-3. Site URL - concatenated with "WordPress integration for " string
+* **Client ID & Client Secret** - Used to request an access token.
+* **Token** - Necessary for accessing the [image_search](https://api.openverse.org/v1/#tag/images/operation/images_search) endpoint.
+* **Search query** - Required for searching images; can also serve as optional alt text.
+* **Site Name** - Provided as the value for the _name_ field during [API registration](https://api.openverse.org/v1/#tag/auth/operation/register).
+* **Admin Email Address** - Provided as the value for the _email_ field during [API registration](https://api.openverse.org/v1/#tag/auth/operation/register).
+* **Site URL** - Combined with the phrase "WordPress integration for" to form the _description_ field during [API registration](https://api.openverse.org/v1/#tag/auth/operation/register).
 
-This plugin uses these information to request your Openverse's Client ID and Client Secret, which in turn will be used to request for API token, valid for up to ten hours, and automatically renews it whenever you search image on Open Source Media block. Your media search query will be used to search Openverse images to find match based on it and your Token is required to connect to the Openverse API media search endpoint.
+This plugin uses the provided information to request your Openverse Client ID and Client Secret. These credentials are then used to obtain an API token, which is valid for up to ten hours and is automatically renewed whenever you perform an image search using the Open Source Media block. Your search query is used to find matching images on Openverse, and the token is required to connect to the Openverse API's media search endpoint.
 
-Your Client ID, Client Secret, and Token are kept on your site and used solely to search and retrieve open-source media through the [Openverse API image_search](https://api.openverse.org/v1/#tag/images/operation/images_search) endpoint. 
-
-This plugin does not track users or collect any personal data, except your Openverse's Client ID, Client Secret, Token and your search query to be used as optional alternative text.
+This plugin does not track users or collect any personal data beyond the information listed above.
 
 For full details, see Openverse’s terms, privacy, API documentation, about and license:
 
@@ -74,7 +75,7 @@ Yes, you need an API key to use the Openverse API. You can obtain an API key by:
 Currently, the plugin only supports images. More media types will be added in future updates.
 
 = Does this plugin track users? =
-No, this plugin does not track users or collect any personal data except storing the Client ID and Client Secret, that will be used to generate API Token, to be used to handle media search.
+No, this plugin does not track users or collect any personal data beyond the information listed on the **EXTERNAL SEVICES** section above.
 
 == Changelog ==
 
